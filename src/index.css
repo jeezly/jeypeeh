@@ -1,0 +1,138 @@
+/* index.css */
+@import "tailwindcss";
+/* Fuerza el plugin de DaisyUI en Tailwind v4 */
+@plugin "daisyui";
+
+html { scroll-behavior: smooth; }
+
+@layer utilities {
+  .neon-border {
+    box-shadow: 0 0 6px #0171dc80, 0 0 14px #0171dc60;
+  }
+  .neon-text {
+    text-shadow: 0 0 6px #0171dc80, 0 0 14px #0171dc60;
+  }
+}
+
+/* --- What I Do: tile plano sin círculo morado --- */
+.whatido-tile {
+  @apply w-16 h-16 flex items-center justify-center rounded-lg bg-transparent;
+}
+
+/* --- Modals SIEMPRE centrados (DaisyUI + force) --- */
+.modal.modal-open { align-items: center; justify-content: center; }
+.modal.modal-open.modal-middle { align-items: center; justify-content: center; }
+
+/* --- Botón rojo para Calzada Code (normal y SKULL neon) --- */
+.btn-visit-red {
+  @apply btn btn-outline;
+  border-color: rgb(239 68 68) !important;   /* red-500 */
+  color: rgb(220 38 38) !important;          /* red-600 */
+}
+.btn-visit-red:hover {
+  background: rgb(239 68 68) !important;
+  color: white !important;
+}
+.btn-visit-red:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(239,68,68,.25);
+}
+
+/* En modo skull: rojo más brillante con glow tipo neón */
+:root[data-theme="skull"] .btn-visit-red {
+  border-color: #ff2b2b !important;
+  color: #ff4d4d !important;
+  box-shadow: 0 0 10px rgba(255,77,77,.8), 0 0 20px rgba(255,77,77,.35);
+}
+:root[data-theme="skull"] .btn-visit-red:hover {
+  background: #ff2b2b !important;
+  color: #fff !important;
+  box-shadow: 0 0 14px rgba(255,77,77,.95), 0 0 26px rgba(255,77,77,.5);
+}
+
+/* Neon azul global para skull (sigues teniendo tus tokens) */
+[data-theme="skull"] [data-theme-skull-only] {
+  border-color: rgb(239 68 68) !important;
+  box-shadow: 0 0 6px rgb(239 68 68 / 0.5), 0 0 14px rgb(239 68 68 / 0.3) !important;
+}
+[data-theme="skull"] [data-theme-skull-only] span {
+  color: rgb(239 68 68) !important;
+}
+/* Botones rojos (Cerrar) con neón en modo skull */
+[data-theme="skull"] .btn-error,
+[data-theme="skull"] .btn-outline.btn-error {
+  border-color: #ef4444 !important;
+  color: #ef4444 !important;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.8),
+              0 0 16px rgba(239, 68, 68, 0.6),
+              0 0 24px rgba(239, 68, 68, 0.4);
+}
+/* Botón Visitar (outline verde como el Cerrar rojo) */
+.btn-visit-green{
+  @apply btn btn-outline;
+  border-color:#006633 !important;
+  color:#006633 !important;
+  background: transparent !important;
+}
+.btn-visit-green:hover{
+  /* solo un “hint”, sin rellenar completo */
+  background: rgba(0,102,51,.08) !important;
+  box-shadow: 0 0 8px rgba(0,102,51,.35);
+}
+
+/* En modo skull: mismo verde pero con glow tipo neón (ligeramente más brillante) */
+:root[data-theme="skull"] .btn-visit-green{
+  border-color:#00a15a !important;   /* verde brillante derivado */
+  color:#00a15a !important;
+  box-shadow: 0 0 10px rgba(0,161,90,.85), 0 0 20px rgba(0,161,90,.35);
+}
+:root[data-theme="skull"] .btn-visit-green:hover{
+  background: rgba(0,161,90,.10) !important;
+  box-shadow: 0 0 14px rgba(0,161,90,.95), 0 0 26px rgba(0,161,90,.5);
+}
+
+/* Botones Cerrar (rojo outline) ya definidos antes; dejo aquí por claridad */
+[data-theme="skull"] .btn-error,
+[data-theme="skull"] .btn-outline.btn-error{
+  border-color:#ef4444 !important;
+  color:#ef4444 !important;
+  box-shadow:0 0 8px rgba(239,68,68,.8), 0 0 16px rgba(239,68,68,.6), 0 0 24px rgba(239,68,68,.4);
+}
+/* Fuerza global: modales SIEMPRE al centro del viewport */
+/* Estado base: oculto */
+.modal{
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1000 !important;
+  display: none !important;     /* <- clave */
+}
+
+/* Solo cuando está abierto: centrar en viewport */
+.modal.modal-open{
+  display: grid !important;
+  place-items: center !important;
+  padding: 1rem;                /* respiración */
+}
+
+/* Caja del modal */
+.modal-box{
+  margin: 0 !important;
+  max-height: min(90vh, 680px);
+  overflow: hidden;
+}
+.modal-box > .max-h-\[60vh\]{ max-height: 60vh; }
+
+/* Burbujas About: borde + glow azul solo en SKULL */
+:root[data-theme="skull"] .holo-bubble {
+  border: 3px solid #0171DC;
+  box-shadow:
+    0 0 8px  #0171dc80,
+    0 0 16px #0171dc60,
+    inset 0 0 8px #0171dc33;
+}
+:root[data-theme="skull"] .holo-bubble:hover {
+  box-shadow:
+    0 0 10px #0171dc99,
+    0 0 22px #0171dc80,
+    inset 0 0 10px #0171dc40;
+}
