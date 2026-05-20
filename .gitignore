@@ -7,10 +7,29 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies / build
 node_modules
 dist
 dist-ssr
+
+# Env files
+.env
+.env.*
 *.local
+
+# Cloudflare
+.cloudflare/
+cloudflared
+cloudflared.exe
+cert.pem
+
+# Vercel
+.vercel
+
+# SSH / keys
+*.pem
+*.key
+*.crt
 
 # Editor directories and files
 .vscode/*

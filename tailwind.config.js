@@ -12,35 +12,32 @@ export default {
       // puedes quitar "cupcake" si ya no lo usas
       {
         skull: {
-          /** colores principales */
-          primary: "#0171DC",
-          "primary-content": "#ffffff",
+  primary: "#0171DC",
+  "primary-content": "#ffffff",
 
-          /** fondo ultra oscuro + texto blanco */
-          "base-100": "#000000",
-          "base-200": "#050505",
-          // usamos base-300 para los BORDES en azul neón
-          "base-300": "#0171DC",
-          "base-content": "#ffffff",
+  "base-100": "#111111",
+  "base-200": "#0a0a0a",
+  "base-300": "#2a2a2a",
+  "base-content": "#f5f5f5",
 
-          /** otros acentos en el mismo azul para consistencia */
-          secondary: "#0171DC",
-          "secondary-content": "#ffffff",
-          accent: "#0171DC",
-          "accent-content": "#ffffff",
-          info: "#0171DC",
-          success: "#10b981",
-          warning: "#f59e0b",
-          error: "#ef4444",
-          neutral: "#0b0b0b",
-          "neutral-content": "#e5e7eb",
+  secondary: "#0171DC",
+  "secondary-content": "#ffffff",
+  accent: "#0171DC",
+  "accent-content": "#ffffff",
 
-          /** radios y borde por si usas tokens de radius/border */
-          "--rounded-box": "1rem",
-          "--rounded-btn": "0.75rem",
-          "--rounded-badge": "9999px",
-          "--tab-radius": "0.5rem",
-        },
+  info: "#0171DC",
+  success: "#10b981",
+  warning: "#f59e0b",
+  error: "#ef4444",
+
+  neutral: "#171717",
+  "neutral-content": "#e5e7eb",
+
+  "--rounded-box": "1rem",
+  "--rounded-btn": "0.75rem",
+  "--rounded-badge": "9999px",
+  "--tab-radius": "0.5rem",
+},
       },
     ],
   },
