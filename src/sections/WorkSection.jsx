@@ -747,17 +747,7 @@ function MusicPage() {
               febdiss
             </h4>
 
-            <p className="opacity-70 text-sm md:text-base mt-4 leading-relaxed">
-              A track made during a moment of frustration instead of throwing
-              everything away. Just another way to channel emotion into something
-              creative.
-            </p>
-
-            <div className="flex flex-wrap gap-2 mt-5">
-              <span className="badge badge-outline">Producer</span>
-              <span className="badge badge-outline">Creative</span>
-              <span className="badge badge-outline">Audio</span>
-            </div>
+            
 
             <div className="mt-7 rounded-2xl border border-base-300 bg-base-200/40 p-4">
               <audio controls preload="metadata" className="w-full">
