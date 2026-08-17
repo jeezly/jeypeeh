@@ -11,6 +11,10 @@ const stroke = {
   strokeLinejoin: "round",
 };
 
+/* =========================================================
+   ICONS
+========================================================= */
+
 const PaletteIcon = ({ className = "" }) => (
   <svg viewBox="0 0 24 24" className={`${baseIcon} ${className}`}>
     <path
@@ -33,7 +37,10 @@ const LayoutIcon = ({ className = "" }) => (
 
 const CodeIcon = ({ className = "" }) => (
   <svg viewBox="0 0 24 24" className={`${baseIcon} ${className}`}>
-    <path {...stroke} d="M8 12l-3 3 3 3M16 12l3 3-3 3M13 6l-2 6 2 6" />
+    <path
+      {...stroke}
+      d="M8 12l-3 3 3 3M16 12l3 3-3 3M13 6l-2 6 2 6"
+    />
   </svg>
 );
 
@@ -46,20 +53,32 @@ const AppIcon = ({ className = "" }) => (
 
 const MusicIcon = ({ className = "" }) => (
   <svg viewBox="0 0 24 24" className={`${baseIcon} ${className}`}>
-    <path {...stroke} d="M9 18a3 3 0 11-2-2.83V7l10-2v8.17A3 3 0 1115 15" />
+    <path
+      {...stroke}
+      d="M9 18a3 3 0 11-2-2.83V7l10-2v8.17A3 3 0 1115 15"
+    />
   </svg>
 );
+
+/* =========================================================
+   SECTION WRAPPER
+========================================================= */
 
 function Section({ title, children }) {
   return (
     <section className="scroll-mt-24">
-      <h2 className="mb-8 text-3xl md:text-4xl font-extrabold text-center tracking-tight">
+      <h2 className="mb-8 text-center text-3xl font-extrabold tracking-tight md:text-4xl">
         {title}
       </h2>
+
       {children}
     </section>
   );
 }
+
+/* =========================================================
+   BODY SCROLL LOCK
+========================================================= */
 
 function lockBodyScroll() {
   const scrollY = window.scrollY;
@@ -67,280 +86,865 @@ function lockBodyScroll() {
   const previous = {
     position: document.body.style.position,
     top: document.body.style.top,
+    left: document.body.style.left,
+    right: document.body.style.right,
     width: document.body.style.width,
     overflow: document.body.style.overflow,
-    touchAction: document.body.style.touchAction,
   };
 
   document.body.style.position = "fixed";
   document.body.style.top = `-${scrollY}px`;
+  document.body.style.left = "0";
+  document.body.style.right = "0";
   document.body.style.width = "100%";
   document.body.style.overflow = "hidden";
-  document.body.style.touchAction = "none";
 
   return () => {
     document.body.style.position = previous.position;
     document.body.style.top = previous.top;
+    document.body.style.left = previous.left;
+    document.body.style.right = previous.right;
     document.body.style.width = previous.width;
     document.body.style.overflow = previous.overflow;
-    document.body.style.touchAction = previous.touchAction;
 
     window.scrollTo(0, scrollY);
   };
 }
 
+/* =========================================================
+   PROJECT CARD
+========================================================= */
+
+function ProgressProjectCard({
+  number,
+  eyebrow,
+  title,
+  description,
+  progress,
+  accent = "yellow",
+  logo = null,
+  subtitle = null,
+  buttonLabel = null,
+  onButtonClick = null,
+}) {
+  const accentMap = {
+    yellow: {
+      border: "border-yellow-400/30 hover:border-yellow-400/70",
+      glow: "bg-yellow-400/10",
+      text: "text-yellow-500",
+      badgeBorder: "border-yellow-400/35",
+      badgeBg: "bg-yellow-400/10",
+      bar: "bg-yellow-400",
+      shadow: "shadow-[0_0_18px_rgba(250,204,21,0.25)]",
+      hoverShadow:
+        "hover:shadow-[0_18px_45px_rgba(250,204,21,0.08)]",
+      button:
+        "border-yellow-400/40 bg-yellow-400/10 text-yellow-500 hover:bg-yellow-400 hover:text-black",
+    },
+
+    red: {
+      border: "border-red-500/30 hover:border-red-500/70",
+      glow: "bg-red-500/10",
+      text: "text-red-500",
+      badgeBorder: "border-red-500/35",
+      badgeBg: "bg-red-500/10",
+      bar: "bg-red-500",
+      shadow: "shadow-[0_0_18px_rgba(239,68,68,0.25)]",
+      hoverShadow:
+        "hover:shadow-[0_18px_45px_rgba(239,68,68,0.08)]",
+      button:
+        "border-red-500/40 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white",
+    },
+
+    green: {
+      border: "border-green-500/30 hover:border-green-500/70",
+      glow: "bg-green-500/10",
+      text: "text-green-500",
+      badgeBorder: "border-green-500/35",
+      badgeBg: "bg-green-500/10",
+      bar: "bg-green-500",
+      shadow: "shadow-[0_0_18px_rgba(34,197,94,0.25)]",
+      hoverShadow:
+        "hover:shadow-[0_18px_45px_rgba(34,197,94,0.08)]",
+      button:
+        "border-green-500/40 bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-white",
+    },
+  };
+
+  const a = accentMap[accent] || accentMap.yellow;
+
+  return (
+    <div
+      className={[
+        "group relative overflow-hidden",
+        "rounded-[1.15rem] md:rounded-[1.5rem]",
+        "border bg-base-200/40",
+        "p-3 md:p-5",
+        "transition-all duration-500",
+        "md:hover:-translate-y-1",
+        a.border,
+        a.hoverShadow,
+      ].join(" ")}
+    >
+      {/* Glow */}
+      <div
+        className={[
+          "pointer-events-none absolute",
+          "-right-12 -top-12 h-28 w-28",
+          "md:-right-16 md:-top-16 md:h-40 md:w-40",
+          "rounded-full blur-3xl",
+          "transition-transform duration-700",
+          "group-hover:scale-125",
+          a.glow,
+        ].join(" ")}
+      />
+
+      <div className="relative">
+        {/* TOP */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex min-w-0 items-center gap-2 md:gap-3">
+            <span
+              className={[
+                "grid shrink-0 place-items-center rounded-lg border",
+                "h-7 w-7 text-[9px]",
+                "md:h-9 md:w-9 md:rounded-xl md:text-xs",
+                "font-black",
+                a.badgeBorder,
+                a.badgeBg,
+                a.text,
+              ].join(" ")}
+            >
+              {number}
+            </span>
+
+            <span
+              className={[
+                "truncate",
+                "text-[8px] md:text-[10px]",
+                "uppercase tracking-[0.15em] md:tracking-[0.2em]",
+                "font-black",
+                a.text,
+              ].join(" ")}
+            >
+              {eyebrow}
+            </span>
+          </div>
+
+          <span
+            className={[
+              "shrink-0 text-[11px] font-black md:text-sm",
+              a.text,
+            ].join(" ")}
+          >
+            {progress}%
+          </span>
+        </div>
+
+        {/* PROJECT INFO */}
+        {logo ? (
+          <div className="mt-2.5 flex items-center gap-2.5 md:mt-5 md:gap-3">
+            <div
+              className={[
+                "grid shrink-0 place-items-center overflow-hidden",
+                "h-8 w-8 rounded-lg p-1",
+                "md:h-11 md:w-11 md:rounded-xl md:p-1.5",
+                "border",
+                a.badgeBorder,
+                a.badgeBg,
+              ].join(" ")}
+            >
+              <img
+                src={logo}
+                alt={title}
+                className="h-full w-full object-contain"
+              />
+            </div>
+
+            <div className="min-w-0">
+              <h4 className="truncate text-sm font-black tracking-tight md:text-xl">
+                {title}
+              </h4>
+
+              {subtitle && (
+                <p className="truncate text-[7px] font-bold uppercase tracking-[0.12em] opacity-45 md:text-[10px] md:tracking-[0.16em]">
+                  {subtitle}
+                </p>
+              )}
+            </div>
+          </div>
+        ) : (
+          <h4 className="mt-2.5 text-sm font-black tracking-tight md:mt-5 md:text-xl">
+            {title}
+          </h4>
+        )}
+
+        {/* DESCRIPTION */}
+        <p className="mt-1 text-[10px] leading-4 opacity-55 md:mt-2 md:text-sm md:leading-relaxed">
+          {description}
+        </p>
+
+        {/* PROGRESS */}
+        <div className="mt-2.5 md:mt-5">
+          <div className="h-1.5 overflow-hidden rounded-full bg-base-300 md:h-2">
+            <div
+              className={[
+                "h-full rounded-full",
+                "transition-all duration-1000",
+                a.bar,
+                a.shadow,
+              ].join(" ")}
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+
+        {/* BUTTON */}
+        {buttonLabel && onButtonClick && (
+          <div className="mt-2.5 flex justify-end md:mt-5">
+            <button
+              type="button"
+              onClick={onButtonClick}
+              className={[
+                "inline-flex items-center gap-1.5",
+                "rounded-full border",
+                "px-3 py-1.5",
+                "text-[9px] font-black",
+                "md:px-4 md:py-2 md:text-xs",
+                "transition-all duration-300",
+                "hover:-translate-y-0.5",
+                a.button,
+              ].join(" ")}
+            >
+              {buttonLabel}
+              <span>→</span>
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   ABOUT MODAL
+========================================================= */
+
+function AboutModal({ item, onClose, onSelectSection }) {
+  const closeButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (!item) {
+      return undefined;
+    }
+
+    const unlock = lockBodyScroll();
+
+    requestAnimationFrame(() => {
+      closeButtonRef.current?.focus();
+    });
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      unlock();
+    };
+  }, [item, onClose]);
+
+  if (!item) {
+    return null;
+  }
+
+  const isProjects = item.id === "projects";
+
+  return createPortal(
+    <div
+      className="
+        fixed inset-0 z-[9999]
+        flex items-center justify-center
+        p-2 sm:p-4 md:p-6
+      "
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={`about-modal-${item.id}`}
+    >
+      {/* BACKDROP */}
+      <button
+        type="button"
+        aria-label="Close modal"
+        onClick={onClose}
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+      />
+
+      {/* MODAL */}
+      <div
+        className={[
+          "relative z-10 w-full max-w-3xl",
+          "overflow-hidden",
+          "rounded-[1.4rem] md:rounded-[2rem]",
+          "border bg-base-100 shadow-2xl",
+          item.border,
+
+          isProjects
+            ? "max-h-[96svh] md:max-h-[90vh]"
+            : "max-h-[92svh]",
+        ].join(" ")}
+      >
+        {/* HEADER */}
+        <div
+          className="
+            relative z-20
+            flex items-center justify-between gap-4
+            border-b border-base-300
+            bg-base-100/95
+            px-4 py-2.5
+            backdrop-blur-xl
+            md:px-6 md:py-4
+          "
+        >
+          <div>
+            <p className="text-[8px] font-bold uppercase tracking-[0.22em] opacity-45 md:text-[10px]">
+              About
+            </p>
+
+            <h3
+              id={`about-modal-${item.id}`}
+              className="text-lg font-black tracking-tight md:text-2xl"
+            >
+              {item.title}
+            </h3>
+          </div>
+
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={onClose}
+            className="
+              grid h-8 w-8 place-items-center
+              rounded-full
+              border border-base-300
+              bg-base-200
+              text-sm
+              transition
+              hover:bg-base-300
+              md:h-9 md:w-9
+            "
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* CONTENT */}
+        <div
+          className={
+            isProjects
+              ? `
+                overflow-hidden
+                p-3
+
+                md:max-h-[calc(90vh-82px)]
+                md:overflow-y-auto
+                md:p-7
+              `
+              : `
+                max-h-[calc(92svh-65px)]
+                overflow-y-auto
+                p-4
+                md:p-7
+              `
+          }
+        >
+          {typeof item.content === "function"
+            ? item.content({
+                close: onClose,
+
+                goToSection: (section) => {
+                  onClose();
+
+                  requestAnimationFrame(() => {
+                    onSelectSection?.(section);
+                  });
+                },
+              })
+            : item.content}
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+/* =========================================================
+   ABOUT SECTION
+========================================================= */
+
 export default function AboutSection({ onSelectSection }) {
-  const [activeModal, setActiveModal] = useState(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const aboutRef = useRef(null);
 
-  const openModal = (id) => setActiveModal(id);
-  const closeModal = () => setActiveModal(null);
-
-  const goToSection = (sectionKey) => {
-    closeModal();
-
-    setTimeout(() => {
-      onSelectSection?.(sectionKey);
-    }, 80);
-  };
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect();
         }
       },
-      { threshold: 0.25 }
+      {
+        threshold: 0.15,
+      }
     );
 
-    if (aboutRef.current) observer.observe(aboutRef.current);
-    return () => observer.disconnect();
-  }, []);
+    const current = aboutRef.current;
 
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === "Escape") closeModal();
+    if (current) {
+      observer.observe(current);
+    }
+
+    return () => {
+      if (current) {
+        observer.unobserve(current);
+      }
     };
-
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
   }, []);
 
-  useEffect(() => {
-    if (!activeModal) return;
-    return lockBodyScroll();
-  }, [activeModal]);
-
-  const yellowButton =
-    "btn btn-outline btn-sm border-yellow-400 text-yellow-500 hover:bg-yellow-400 hover:text-black";
-
-  const bubbles = [
-    {
-      id: "hobbies",
-      title: "Hobbies & Lifestyle",
-      image: "/img/jeypeehHobbies.png",
-      ring: "ring-[#0171DC]",
-      border: "border-[#0171DC]",
-      content: (
-        <div>
-          <p className="mb-4">
-            When I’m not coding, I like doing things that keep me active and creative:
-          </p>
-
-          <ul className="list-disc list-inside space-y-2">
-            <li><span className="font-semibold">Skateboarding:</span> clears my mind and keeps me moving.</li>
-            <li><span className="font-semibold">Music production:</span> I make beats and experiment with different genres.</li>
-            <li><span className="font-semibold">Anime:</span> my favorites are <span className="font-semibold">Vinland Saga</span> and <span className="font-semibold">Attack on Titan</span>.</li>
-            <li><span className="font-semibold">Meeting new people:</span> I enjoy hearing different stories and perspectives.</li>
-            <li><span className="font-semibold">Learning:</span> I’m always taking a course or following a tutorial.</li>
-          </ul>
-
-          <p className="mt-4">
-            If you share any of these interests, feel free to reach out — I’m always open to connect.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: "projects",
-      title: "My Projects",
-      image: "/img/jeypeehProjects.png",
-      ring: "ring-yellow-400",
-      border: "border-yellow-400",
-      content: (
-        <div>
-          <div className="alert border-yellow-400 bg-yellow-400/10 text-yellow-600 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-
-            <span>
-              Quick peek of what I’m building. Full details will be added to the Work section when the project is ready.
-            </span>
-          </div>
-
-          <div className="grid gap-4 mb-5">
-            <div className="card bg-base-200 border border-yellow-400/40">
-              <div className="card-body p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <h4 className="card-title text-sm">IoT + Arduino App</h4>
-
-                  <span className="badge badge-outline border-yellow-400 text-yellow-500">
-                    In development
-                  </span>
-                </div>
-
-                <p className="text-xs opacity-80">
-                  I’m currently working on a new app concept that will connect software with IoT and Arduino.
-                  The idea is still in the proposal stage, but the goal is to build something practical that receives
-                  data from sensors and turns it into a useful digital experience.
-                </p>
-
-                <p className="text-xs opacity-70 mt-3">
-                  Once the project is more complete, I’ll move it into the Work section with screenshots, details,
-                  tools, and the final case study.
-                </p>
-
-                <div className="card-actions justify-end mt-3">
-                  <button type="button" className={yellowButton}>
-                    Coming soon
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="card bg-base-200 border border-yellow-400/40">
-              <div className="card-body p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <h4 className="card-title text-sm">Music / Beats</h4>
-
-                  <span className="badge badge-outline border-yellow-400 text-yellow-500">
-                    Producer
-                  </span>
-                </div>
-
-                <p className="text-xs opacity-80">
-                  I also produce music. You can check that side of my work inside the Work section.
-                </p>
-
-                <div className="card-actions justify-end">
-                  <button
-                    type="button"
-                    className={yellowButton}
-                    onClick={() => goToSection("work")}
-                  >
-                    Go to Music
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center">
-            <p className="text-sm opacity-80 mb-3">
-              For completed projects, open the Work section below.
-            </p>
-
-            <button
-              type="button"
-              onClick={() => goToSection("work")}
-              className={yellowButton}
-            >
-              Go to Work
-            </button>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: "community",
-      title: "Communities",
-      image: "/img/jeypeehCommunities.png",
-      ring: "ring-green-500",
-      border: "border-green-500",
-      content: (
-        <div>
-          <div className="flex items-center gap-4 mb-4">
-            <img
-              src="/img/calzadacode.jpg"
-              alt="Calzada Code"
-              className="h-14 w-14 rounded-2xl object-cover border border-green-500/40 bg-base-200"
-            />
-
-            <div>
-              <h4 className="font-bold mb-1">Calzada Code</h4>
-              <p className="text-sm opacity-80">
-                Software engineering community
-              </p>
-            </div>
-          </div>
-
-          <p className="mb-6">
-            We’re a community for people interested in software engineering.
-            The goal is to create a space to learn, share knowledge, and connect
-            with more code magicians.
-          </p>
-
-          <a
-            href="https://calzadacode.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-visit-green btn-sm"
-          >
-            Visit Calzada Code
-          </a>
-        </div>
-      ),
-    },
-  ];
+  /* =========================================================
+     WHAT I DO
+  ========================================================= */
 
   const skillsData = [
-    { Icon: PaletteIcon, label: "Graphic Design", color: "text-white", bg: "bg-zinc-900" },
-    { Icon: LayoutIcon, label: "Web Design", color: "text-blue-500", bg: "bg-blue-500/10" },
-    { Icon: CodeIcon, label: "Software", color: "text-pink-500", bg: "bg-pink-500/10" },
-    { Icon: AppIcon, label: "Application", color: "text-green-500", bg: "bg-green-500/10" },
-    { Icon: MusicIcon, label: "Producer", color: "text-red-500", bg: "bg-red-500/10" },
+    {
+      id: "graphic",
+      Icon: PaletteIcon,
+      label: "Graphic Design",
+      color: "text-white",
+      bg: "bg-zinc-900",
+    },
+
+    {
+      id: "web",
+      Icon: LayoutIcon,
+      label: "Web Design",
+      color: "text-blue-500",
+      bg: "bg-blue-500/10",
+    },
+
+    {
+      id: "software",
+      Icon: CodeIcon,
+      label: "Software",
+      color: "text-pink-500",
+      bg: "bg-pink-500/10",
+    },
+
+    {
+      id: "application",
+      Icon: AppIcon,
+      label: "Application",
+      color: "text-green-500",
+      bg: "bg-green-500/10",
+    },
+
+    {
+      id: "producer",
+      Icon: MusicIcon,
+      label: "Producer",
+      color: "text-red-500",
+      bg: "bg-red-500/10",
+    },
   ];
 
-  const activeBubble = bubbles.find((bubble) => bubble.id === activeModal);
+  /* =========================================================
+     MORE ABOUT ME
+  ========================================================= */
 
-  const Bubble = ({ bubble }) => (
-    <div className="relative group shrink-0 flex flex-col items-center w-32">
-      <button
-        type="button"
-        className={[
-          "w-28 h-28 md:w-32 md:h-32",
-          "rounded-full bg-base-100",
-          "flex items-center justify-center",
-          "cursor-pointer shadow-md hover:shadow-lg",
-          "transition-all duration-300 transform md:group-hover:scale-105",
-          "overflow-hidden relative",
-          "focus:outline-none",
-          "ring-4 ring-offset-4 ring-offset-base-200",
-          bubble.ring,
-        ].join(" ")}
-        onClick={() => openModal(bubble.id)}
-        aria-label={bubble.title}
-      >
-        <img
-          src={bubble.image}
-          alt={bubble.title}
-          className="w-full h-full object-cover opacity-95 group-hover:opacity-100 transition-opacity"
-        />
+  const items = [
+    /* ---------------------------------------------------------
+       HOBBIES
+    --------------------------------------------------------- */
 
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-full" />
-      </button>
+    {
+      id: "hobbies",
 
-      <div className="text-center mt-4 w-full">
-        <h3 className="font-semibold text-sm leading-tight">
-          {bubble.title}
-        </h3>
-      </div>
-    </div>
-  );
+      title: "Hobbies & Lifestyle",
+
+      image: "/img/jeypeehHobbies.png",
+
+      ring: "ring-[#0171DC]",
+
+      border: "border-[#0171DC]",
+
+      content: (
+        <div>
+          <div className="mb-5">
+            <p className="mb-2 text-xs font-black uppercase tracking-[0.22em] text-[#0171DC]">
+              Outside the screen
+            </p>
+
+            <h3 className="text-2xl font-black tracking-tight md:text-3xl">
+              Things that keep me moving.
+            </h3>
+
+            <p className="mt-2 text-sm leading-relaxed opacity-65">
+              When I&apos;m not coding, I like doing things that keep me
+              active, curious and creative.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2.5 md:gap-3">
+            {[
+              {
+                title: "Skateboarding",
+                text: "Clears my mind and keeps me moving.",
+                label: "MOVE",
+              },
+
+              {
+                title: "Music production",
+                text: "I make beats and experiment with different genres.",
+                label: "CREATE",
+              },
+
+              {
+                title: "Anime & movies",
+                text: "Stories, worlds and visual ideas that inspire me.",
+                label: "WATCH",
+              },
+
+              {
+                title: "Meeting people",
+                text: "I enjoy hearing different stories and perspectives.",
+                label: "CONNECT",
+              },
+
+              {
+                title: "Learning",
+                text: "I’m always trying to understand or build something new.",
+                label: "LEARN",
+              },
+
+              {
+                title: "Nature",
+                text: "Hiking, forests and the beach help me reset.",
+                label: "RESET",
+              },
+
+              {
+                title: "Basketball",
+                text: "Another way I like to stay active and have fun.",
+                label: "PLAY",
+              },
+
+              {
+                title: "Technology",
+                text: "I genuinely enjoy discovering how things work.",
+                label: "BUILD",
+              },
+            ].map((hobby, index) => (
+              <div
+                key={hobby.title}
+                className="
+                  group relative overflow-hidden
+                  rounded-[1.15rem]
+                  border border-[#0171DC]/20
+                  bg-base-200/45
+                  p-3
+                  transition-all duration-300
+                  hover:-translate-y-1
+                  hover:border-[#0171DC]/50
+                "
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span
+                    className="
+                      grid h-7 w-7 place-items-center
+                      rounded-lg
+                      border border-[#0171DC]/25
+                      bg-[#0171DC]/10
+                      text-[9px] font-black
+                      text-[#0171DC]
+                    "
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  <span
+                    className="
+                      text-[8px]
+                      font-black
+                      uppercase
+                      tracking-[0.14em]
+                      text-[#0171DC]
+                      opacity-70
+                    "
+                  >
+                    {hobby.label}
+                  </span>
+                </div>
+
+                <h4 className="mt-3 text-sm font-black tracking-tight">
+                  {hobby.title}
+                </h4>
+
+                <p className="mt-1 text-[10px] leading-4 opacity-55 md:text-xs">
+                  {hobby.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ),
+    },
+
+    /* ---------------------------------------------------------
+       MY PROJECTS
+    --------------------------------------------------------- */
+
+    {
+      id: "projects",
+
+      title: "My Projects",
+
+      image: "/img/jeypeehProjects.png",
+
+      ring: "ring-yellow-400",
+
+      border: "border-yellow-400",
+
+      content: ({ goToSection }) => (
+        <div>
+          {/* INTRO */}
+          <div className="mb-2.5 md:mb-4">
+            <p
+              className="
+                mb-1
+                text-[8px]
+                font-black
+                uppercase
+                tracking-[0.18em]
+                text-yellow-500
+
+                md:mb-2
+                md:text-xs
+                md:tracking-[0.22em]
+              "
+            >
+              Currently building
+            </p>
+
+            <h3 className="text-lg font-black tracking-tight md:text-3xl">
+              What&apos;s going on lately.
+            </h3>
+
+            <p
+              className="
+                mt-1
+                max-w-xl
+                text-[10px]
+                leading-4
+                opacity-55
+
+                md:mt-2
+                md:text-sm
+                md:leading-relaxed
+              "
+            >
+              A small look at what I&apos;m building, finishing and thinking
+              about next.
+            </p>
+          </div>
+
+          {/* PROJECTS */}
+          <div className="grid gap-2 md:gap-3">
+            <ProgressProjectCard
+              number="01"
+              eyebrow="Thinking"
+              title="Thinking about a new project"
+              description="Still figuring out what comes next."
+              progress={30}
+              accent="yellow"
+            />
+
+            <ProgressProjectCard
+              number="02"
+              eyebrow="Music"
+              title="Cooking something new"
+              description="A new track is currently taking shape."
+              progress={60}
+              accent="red"
+            />
+
+            <ProgressProjectCard
+              number="03"
+              eyebrow="Completed"
+              title="VOLTS"
+              subtitle="Full-Stack + IoT Ecosystem"
+              description="Hardware, mobile, cloud and enterprise software."
+              progress={100}
+              accent="green"
+              logo="/img/volts/volts-logo.png"
+              buttonLabel="View in Work"
+              onButtonClick={() => goToSection("work")}
+            />
+          </div>
+
+          <div className="mt-2 border-t border-base-300 pt-2 md:mt-5 md:pt-4">
+            <p className="text-center text-[8px] opacity-40 md:text-xs">
+              Projects move to Work once they&apos;re ready to be properly
+              documented.
+            </p>
+          </div>
+        </div>
+      ),
+    },
+
+    /* ---------------------------------------------------------
+       COMMUNITIES
+    --------------------------------------------------------- */
+
+    {
+      id: "community",
+
+      title: "Communities",
+
+      image: "/img/jeypeehCommunities.png",
+
+      ring: "ring-green-500",
+
+      border: "border-green-500",
+
+      content: (
+        <div>
+          <div className="mb-5">
+            <p className="mb-2 text-xs font-black uppercase tracking-[0.22em] text-green-500">
+              Community
+            </p>
+
+            <h3 className="text-2xl font-black tracking-tight md:text-3xl">
+              Building with other people.
+            </h3>
+
+            <p className="mt-2 text-sm leading-relaxed opacity-65">
+              Technology gets better when knowledge, ideas and experiences are
+              shared.
+            </p>
+          </div>
+
+          <div
+            className="
+              group relative overflow-hidden
+              rounded-[1.5rem]
+              border border-green-500/25
+              bg-base-200/45
+              p-5
+              transition-all duration-500
+              hover:-translate-y-1
+              hover:border-green-500/60
+            "
+          >
+            <div
+              className="
+                pointer-events-none absolute
+                -right-20 -top-20
+                h-44 w-44
+                rounded-full
+                bg-green-500/10
+                blur-3xl
+              "
+            />
+
+            <div className="relative">
+              <div className="flex items-center gap-4">
+                <div
+                  className="
+                    h-16 w-16 shrink-0
+                    overflow-hidden
+                    rounded-2xl
+                    border border-green-500/30
+                    bg-base-200
+                  "
+                >
+                  <img
+                    src="/img/calzadacode.jpg"
+                    alt="Calzada Code"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+
+                <div>
+                  <p className="text-[9px] font-black uppercase tracking-[0.16em] text-green-500">
+                    Software engineering community
+                  </p>
+
+                  <h4 className="mt-1 text-xl font-black tracking-tight md:text-2xl">
+                    Calzada Code
+                  </h4>
+                </div>
+              </div>
+
+              <p className="mt-4 text-sm leading-relaxed opacity-65">
+                We&apos;re a community for people interested in software
+                engineering. A place to learn, share knowledge and connect with
+                more code magicians.
+              </p>
+
+              <div className="mt-5 grid grid-cols-3 gap-2">
+                {["Learn", "Share", "Connect"].map((label) => (
+                  <div
+                    key={label}
+                    className="
+                      rounded-xl
+                      border border-green-500/15
+                      bg-green-500/5
+                      px-2 py-3
+                      text-center
+                    "
+                  >
+                    <span className="text-[8px] font-black uppercase tracking-[0.14em] text-green-500 md:text-[9px]">
+                      {label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-5 flex justify-end">
+                <a
+                  href="https://calzadacode.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    inline-flex items-center gap-2
+                    rounded-full
+                    border border-green-500/40
+                    bg-green-500/10
+                    px-4 py-2
+                    text-xs font-black
+                    text-green-500
+                    transition-all duration-300
+                    hover:-translate-y-0.5
+                    hover:bg-green-500
+                    hover:text-white
+                  "
+                >
+                  Visit Calzada Code
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <Section title="About me">
@@ -348,55 +952,97 @@ export default function AboutSection({ onSelectSection }) {
         ref={aboutRef}
         className={`transition-all duration-1000 ease-out ${
           isVisible
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
+            ? "translate-y-0 opacity-100"
+            : "translate-y-10 opacity-0"
         }`}
       >
+        {/* =====================================================
+            INTRO
+        ===================================================== */}
+
         <div className="mb-12 md:mb-16">
           {/* MOBILE */}
-          <div className="md:hidden text-left">
-            <div className="relative float-right ml-4 mb-2 w-[132px]">
-              <div className="relative overflow-hidden rounded-[1.6rem] border border-base-300 bg-base-100/40 shadow-xl rotate-[-2deg]">
+          <div className="text-left md:hidden">
+            <div className="relative float-right mb-2 ml-4 w-[125px]">
+              <div
+                className="
+                  relative overflow-hidden
+                  rounded-[1.5rem]
+                  border border-base-300
+                  bg-base-100/40
+                  shadow-xl
+                  rotate-[-2deg]
+                "
+              >
                 <img
-                  src="/img/jeypeehface.png"
+                  src="/img/work/portfolio-hero.png"
                   alt="Juan Pablo García"
-                  className="w-full h-[170px] object-contain rotate-[2deg] scale-[1.04]"
+                  className="
+                    h-[165px] w-full
+                    scale-[1.04]
+                    rotate-[2deg]
+                    object-cover
+                  "
                 />
               </div>
             </div>
 
-            <p className="text-base leading-8 opacity-85">
-              I'm Juan Pablo García — a software developer and digital creative
-              who loves learning and building. I enjoy producing, designing, and
-              turning ideas into reality through technology and creativity.
-              Outside of work, I'm into skateboarding, hiking, and getting lost
-              in a forest or at the beach. I aim to do things right — with
-              discipline and passion.
+            <p className="text-sm leading-7 opacity-85">
+              I&apos;m Juan Pablo García — a software developer and digital
+              creative who loves learning and building. I enjoy producing,
+              designing, and turning ideas into reality through technology and
+              creativity. Outside of work, I&apos;m into skateboarding, hiking,
+              and getting lost in a forest or at the beach. I aim to do things
+              right — with discipline and passion.
             </p>
 
             <div className="clear-both" />
           </div>
 
           {/* DESKTOP */}
-          <div className="hidden md:grid md:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
+          <div
+            className="
+              hidden items-center gap-12
+              md:grid
+              md:grid-cols-[1.05fr_0.95fr]
+            "
+          >
             <div className="text-left">
-              <p className="text-lg leading-9 opacity-85 max-w-2xl">
-                I'm Juan Pablo García — a software developer and digital creative
-                who loves learning and building. I enjoy producing, designing,
-                and turning ideas into reality through technology and creativity.
-                Outside of work, I'm into skateboarding, hiking, and getting
-                lost in a forest or at the beach. I aim to do things right —
-                with discipline and passion.
+              <p className="max-w-2xl text-lg leading-9 opacity-85">
+                I&apos;m Juan Pablo García — a software developer and digital
+                creative who loves learning and building. I enjoy producing,
+                designing, and turning ideas into reality through technology
+                and creativity. Outside of work, I&apos;m into skateboarding,
+                hiking, and getting lost in a forest or at the beach. I aim to
+                do things right — with discipline and passion.
               </p>
             </div>
 
             <div className="relative flex justify-end">
-              <div className="relative z-10 w-full max-w-[380px]">
-                <div className="relative overflow-hidden rounded-[2.75rem] border border-base-300 bg-base-100/40 shadow-2xl rotate-[-2deg]">
+              <div className="relative z-10 w-full max-w-[420px]">
+                <div
+                  className="
+                    relative overflow-hidden
+                    rounded-[2.75rem]
+                    border border-base-300
+                    bg-base-100/40
+                    shadow-2xl
+                    rotate-[-2deg]
+                    transition-all duration-500
+                    hover:-translate-y-1
+                    hover:rotate-0
+                  "
+                >
                   <img
-                    src="/img/jeypeehface.png"
+                    src="/img/work/portfolio-hero.png"
                     alt="Juan Pablo García"
-                    className="w-full max-h-[430px] object-contain rotate-[2deg] scale-[1.03]"
+                    className="
+                      w-full
+                      max-h-[430px]
+                      scale-[1.03]
+                      rotate-[2deg]
+                      object-cover
+                    "
                   />
                 </div>
               </div>
@@ -404,28 +1050,164 @@ export default function AboutSection({ onSelectSection }) {
           </div>
         </div>
 
+        {/* =====================================================
+            WHAT I DO
+        ===================================================== */}
+
         <div className="mb-10 md:mb-12">
-          <h3 className="text-xl font-semibold mb-6 text-center">
+          <h3 className="mb-6 text-center text-xl font-semibold">
             What I Do
           </h3>
 
-          <div className="flex flex-wrap justify-center gap-7 md:gap-10">
+          {/* =================================================
+              MOBILE
+
+              WEB | SOFTWARE | APPLICATION
+                 DESIGN | PRODUCER
+          ================================================= */}
+
+          <div className="mx-auto grid max-w-[330px] grid-cols-6 gap-x-2 gap-y-5 md:hidden">
+            {/* WEB */}
+            <div className="col-span-2 flex flex-col items-center">
+              <div
+                className="
+                  flex h-12 w-12 items-center justify-center
+                  rounded-xl
+                  border border-base-300
+                  bg-blue-500/10
+                  shadow-sm
+                  transition-all duration-300
+                  hover:-translate-y-1
+                  hover:shadow-lg
+                "
+              >
+                <LayoutIcon className="text-blue-500" />
+              </div>
+
+              <span className="mt-2 whitespace-nowrap text-center text-[11px] font-medium">
+                Web Design
+              </span>
+            </div>
+
+            {/* SOFTWARE */}
+            <div className="col-span-2 flex flex-col items-center">
+              <div
+                className="
+                  flex h-12 w-12 items-center justify-center
+                  rounded-xl
+                  border border-base-300
+                  bg-pink-500/10
+                  shadow-sm
+                  transition-all duration-300
+                  hover:-translate-y-1
+                  hover:shadow-lg
+                "
+              >
+                <CodeIcon className="text-pink-500" />
+              </div>
+
+              <span className="mt-2 whitespace-nowrap text-center text-[11px] font-medium">
+                Software
+              </span>
+            </div>
+
+            {/* APPLICATION */}
+            <div className="col-span-2 flex flex-col items-center">
+              <div
+                className="
+                  flex h-12 w-12 items-center justify-center
+                  rounded-xl
+                  border border-base-300
+                  bg-green-500/10
+                  shadow-sm
+                  transition-all duration-300
+                  hover:-translate-y-1
+                  hover:shadow-lg
+                "
+              >
+                <AppIcon className="text-green-500" />
+              </div>
+
+              <span className="mt-2 whitespace-nowrap text-center text-[11px] font-medium">
+                Application
+              </span>
+            </div>
+
+            {/* GRAPHIC DESIGN */}
+            <div className="col-span-2 col-start-2 flex flex-col items-center">
+              <div
+                className="
+                  flex h-12 w-12 items-center justify-center
+                  rounded-xl
+                  border border-base-300
+                  bg-zinc-900
+                  shadow-sm
+                  transition-all duration-300
+                  hover:-translate-y-1
+                  hover:shadow-lg
+                "
+              >
+                <PaletteIcon className="text-white" />
+              </div>
+
+              <span className="mt-2 whitespace-nowrap text-center text-[11px] font-medium">
+                Graphic Design
+              </span>
+            </div>
+
+            {/* PRODUCER */}
+            <div className="col-span-2 col-start-4 flex flex-col items-center">
+              <div
+                className="
+                  flex h-12 w-12 items-center justify-center
+                  rounded-xl
+                  border border-base-300
+                  bg-red-500/10
+                  shadow-sm
+                  transition-all duration-300
+                  hover:-translate-y-1
+                  hover:shadow-lg
+                "
+              >
+                <MusicIcon className="text-red-500" />
+              </div>
+
+              <span className="mt-2 whitespace-nowrap text-center text-[11px] font-medium">
+                Producer
+              </span>
+            </div>
+          </div>
+
+          {/* =================================================
+              DESKTOP
+              Mantiene tu orden original
+          ================================================= */}
+
+          <div className="hidden flex-wrap justify-center gap-7 md:flex md:gap-10">
             {skillsData.map((skill) => (
               <div
-                key={skill.label}
-                className="flex flex-col items-center group transition-transform duration-300 hover:scale-105"
+                key={skill.id}
+                className="
+                  group flex flex-col items-center
+                  transition-transform duration-300
+                  hover:scale-105
+                "
               >
                 <div
                   className={[
-                    "flex h-14 w-14 items-center justify-center rounded-2xl",
+                    "flex h-14 w-14 items-center justify-center",
+                    "rounded-2xl",
                     "border border-base-300 shadow-sm",
+                    "transition-all duration-300",
+                    "group-hover:-translate-y-1",
+                    "group-hover:shadow-lg",
                     skill.bg,
                   ].join(" ")}
                 >
                   <skill.Icon className={skill.color} />
                 </div>
 
-                <span className="text-sm font-medium text-center mt-2">
+                <span className="mt-2 text-center text-sm font-medium">
                   {skill.label}
                 </span>
               </div>
@@ -433,90 +1215,152 @@ export default function AboutSection({ onSelectSection }) {
           </div>
         </div>
 
-        {/* MOBILE BUBBLES */}
-        <div className="md:hidden w-full overflow-hidden">
-          <div
-            className="overflow-x-auto scrollbar-hide py-3 pb-6"
-            ref={(el) => {
-              if (el && !el.dataset.centered) {
-                requestAnimationFrame(() => {
-                  el.scrollLeft =
-                    (el.scrollWidth - el.clientWidth) / 2;
+        {/* =====================================================
+            MORE ABOUT ME
+        ===================================================== */}
 
-                  el.dataset.centered = "true";
-                });
-              }
-            }}
+        <div className="mt-10 md:mt-12">
+          <div className="mb-6 text-center md:mb-8">
+            <p className="text-[9px] font-black uppercase tracking-[0.25em] text-[#0171DC] md:text-[10px]">
+              More about me
+            </p>
+
+            <h3 className="mt-2 text-xl font-black tracking-tight md:text-2xl">
+              A little more than code.
+            </h3>
+          </div>
+
+          {/* 3 CARDS ALWAYS HORIZONTAL */}
+          <div
+            className="
+              mx-auto
+              grid max-w-3xl
+              grid-cols-3
+              gap-2
+              sm:gap-4
+              md:gap-5
+            "
           >
-            <div className="flex gap-5 px-5 w-max mx-auto">
-              {bubbles.map((bubble) => (
+            {items.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setSelectedItem(item)}
+                className={[
+                  "group relative overflow-hidden",
+                  "rounded-[1.2rem] md:rounded-[1.75rem]",
+                  "border border-base-300",
+                  "bg-base-100/70",
+                  "px-2 py-3 md:p-5",
+                  "backdrop-blur-xl",
+                  "transition-all duration-500",
+                  "hover:-translate-y-1 md:hover:-translate-y-2",
+                  "hover:shadow-xl",
+                ].join(" ")}
+              >
+                {/* GLOW */}
                 <div
-                  key={bubble.id}
-                  className="snap-center shrink-0"
-                >
-                  <Bubble bubble={bubble} />
+                  className={[
+                    "absolute",
+                    "-right-8 -top-8 h-20 w-20",
+                    "md:-right-12 md:-top-12 md:h-32 md:w-32",
+                    "rounded-full blur-3xl opacity-10",
+
+                    item.id === "hobbies"
+                      ? "bg-[#0171DC]"
+                      : item.id === "projects"
+                      ? "bg-yellow-400"
+                      : "bg-green-500",
+                  ].join(" ")}
+                />
+
+                <div className="relative flex flex-col items-center text-center">
+                  {/* IMAGE */}
+                  <div
+                    className={[
+                      "relative overflow-hidden rounded-full",
+
+                      "h-[66px] w-[66px]",
+
+                      "sm:h-20 sm:w-20",
+
+                      "md:h-24 md:w-24",
+
+                      "ring-[3px] ring-offset-2",
+
+                      "md:ring-4 md:ring-offset-4",
+
+                      "ring-offset-base-100",
+
+                      "transition-transform duration-500",
+
+                      "group-hover:scale-105",
+
+                      "group-hover:rotate-[-2deg]",
+
+                      item.ring,
+                    ].join(" ")}
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+
+                  {/* TITLE */}
+                  <h3
+                    className="
+                      mt-3
+                      flex min-h-[30px]
+                      items-center justify-center
+                      text-[10px]
+                      font-black
+                      leading-[1.2]
+
+                      sm:text-xs
+
+                      md:mt-5
+                      md:min-h-0
+                      md:text-base
+                    "
+                  >
+                    {item.title}
+                  </h3>
+
+                  {/* EXPLORE */}
+                  <span
+                    className="
+                      mt-1
+                      text-[7px]
+                      font-bold
+                      uppercase
+                      tracking-[0.14em]
+                      opacity-35
+
+                      md:mt-2
+                      md:text-[9px]
+                      md:tracking-[0.18em]
+                    "
+                  >
+                    Explore
+                  </span>
                 </div>
-              ))}
-            </div>
+              </button>
+            ))}
           </div>
         </div>
-
-        {/* DESKTOP BUBBLES */}
-        <div className="hidden md:flex md:flex-wrap md:justify-center md:gap-12">
-          {bubbles.map((bubble) => (
-            <Bubble key={bubble.id} bubble={bubble} />
-          ))}
-        </div>
-
-        {activeBubble &&
-          createPortal(
-            <div
-              className="fixed inset-0 z-[9999] grid place-items-center bg-black/50 p-4 overscroll-contain"
-              onClick={closeModal}
-              onTouchMove={(e) => e.preventDefault()}
-              role="dialog"
-              aria-modal="true"
-            >
-              <div
-                className="relative w-full max-w-2xl max-h-[90dvh] overflow-hidden rounded-3xl bg-base-100 border border-base-300 shadow-2xl animate-modal-pop overscroll-contain"
-                onClick={(e) => e.stopPropagation()}
-                onTouchMove={(e) => e.stopPropagation()}
-              >
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="btn btn-sm btn-circle btn-outline btn-error absolute right-3 top-3 z-10"
-                  aria-label="Close modal"
-                >
-                  ✕
-                </button>
-
-                <div className="p-6 pr-12">
-                  <div className="flex items-center gap-4 mb-6">
-                    <img
-                      src={activeBubble.image}
-                      alt={activeBubble.title}
-                      className={[
-                        "w-16 h-16 rounded-full object-cover",
-                        "border-4",
-                        activeBubble.border,
-                      ].join(" ")}
-                    />
-
-                    <h3 className="text-2xl font-bold">
-                      {activeBubble.title}
-                    </h3>
-                  </div>
-
-                  <div className="max-h-[62dvh] overflow-y-auto pr-2 pb-2 overscroll-contain">
-                    {activeBubble.content}
-                  </div>
-                </div>
-              </div>
-            </div>,
-            document.body
-          )}
       </div>
+
+      {/* =====================================================
+          MODAL
+      ===================================================== */}
+
+      <AboutModal
+        item={selectedItem}
+        onClose={() => setSelectedItem(null)}
+        onSelectSection={onSelectSection}
+      />
     </Section>
   );
 }
