@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 function Section({ children }) {
   return <section className="scroll-mt-24">{children}</section>;
@@ -633,6 +634,116 @@ const moreProjects = [
   },
 ];
 
+
+const PROJECT_TRANSLATIONS_ES = {
+  volts: {
+    eyebrow: "Ecosistema insignia Full Stack + IoT",
+    desc: "Un ecosistema educativo de tecnología que conecta un compañero robótico físico, una aplicación Android, servicios cloud y una plataforma empresarial de gestión.",
+    story: "VOLTS es un ecosistema tecnológico de extremo a extremo que conecta un compañero robótico con ESP32, una app Android, servicios cloud y una plataforma empresarial completa. Incluye interacción por Bluetooth, producción, inventario, recetas BOM, flujos comerciales, licenciamiento, soporte, auditoría y analítica, manteniendo un enfoque educativo y sostenible.",
+    highlights: ["Robot físico", "Compañero Android", "Plataforma empresarial", "Cloud + Analítica", "Diseño sostenible"],
+    badges: ["★ Favorito", "Más completo", "IoT + App + Web"],
+    videos: ["Robot & IoT", "App Android", "Plataforma web empresarial"],
+  },
+  "casa-leon": {
+    eyebrow: "ERP empresarial + E-Commerce",
+    desc: "Sistema integrado ERP + e-commerce para una fábrica de artículos de piel en León, Guanajuato. Construido alrededor de producción, inventario, compras, ventas, POS, roles, auditoría y arquitectura escalable.",
+    story: "Casa León es una plataforma integrada de ERP y e-commerce diseñada alrededor del flujo operativo real de una fábrica de artículos de piel en León, Guanajuato. El sistema conecta producción, inventario, materias primas, compras, ventas, punto de venta, usuarios, roles y auditoría dentro de una misma arquitectura. También conecta los procesos internos de la fábrica con una experiencia de e-commerce orientada al cliente, manteniendo la información operativa y comercial estructurada, trazable y útil para la toma de decisiones diaria.",
+    highlights: ["Producción", "Inventario", "E-Commerce", "POS", "Auditoría", "Arquitectura escalable"],
+  },
+  jpokedex2: {
+    eyebrow: "Experiencia móvil cinematográfica",
+    desc: "Una experiencia Pokédex reconstruida con enfoque en UI móvil cinematográfica, nostalgia, inspiración HD-2D, modos Time Machine, animaciones y una sensación de app más premium.",
+    story: "jpokedex2 es una reinterpretación completa de mi proyecto Pokédex original, reconstruido como una experiencia móvil mucho más ambiciosa. El objetivo no fue solamente consumir datos de Pokémon, sino crear una aplicación con identidad visual propia, mejor jerarquía, navegación fluida y una presentación cinematográfica inspirada en la nostalgia de Pokémon y la estética HD-2D. Representa la evolución de mi Pokédex original usando la experiencia de diseño y desarrollo que he adquirido desde aquella primera versión.",
+    highlights: ["UI cinematográfica", "Datos de Pokémon", "Time Machine", "HD-2D", "Animaciones", "UX móvil"],
+    badges: ["App móvil"],
+  },
+  instaxia: {
+    eyebrow: "Proyecto de mi hermano",
+    desc: "Landing page moderna para el proyecto de mi hermano, con funcionalidades, precios, preguntas frecuentes, diseño responsivo y una presentación pulida.",
+    story: "Instaxia es una experiencia web de negocio pulida creada alrededor del proyecto de IA de mi hermano. Mi contribución se centró en traducir el producto a una experiencia web clara mediante secciones responsivas, comunicación de funcionalidades, precios, preguntas frecuentes y una jerarquía visual consistente.",
+    highlights: ["Landing responsiva", "Precios", "FAQs", "UX de producto con IA", "Dirección visual"],
+  },
+  "vehicle-reports": {
+    title: "Sistema de Reportes Vehiculares",
+    eyebrow: "Proyecto de estadías",
+    desc: "Plataforma web para centralizar reportes de verificación vehicular de múltiples sucursales.",
+    story: "Vehicle Reports System fue mi proyecto de estadías y una de mis primeras aplicaciones construidas alrededor de una necesidad operativa real. La plataforma centraliza reportes de verificación vehicular de múltiples sucursales, organiza el acceso mediante roles y autenticación, y facilita la consulta y exportación de reportes para las personas que trabajan diariamente con estos datos.",
+    highlights: ["Reportes centralizados", "Múltiples sucursales", "Roles", "Autenticación JWT", "Exportaciones"],
+    badges: ["Web", "Estadías"],
+  },
+  appmedik: {
+    eyebrow: "Proyecto integrador",
+    desc: "Aplicación móvil pediátrica para citas, gestión médica, autenticación y flujo backend.",
+    story: "AppMedik fue un proyecto móvil integrador enfocado en flujos médicos pediátricos. Trabajé con pantallas orientadas a citas, autenticación de usuarios, lógica backend, MongoDB y conceptos de despliegue cloud mientras aprendía cómo un cliente móvil se comunica con servicios y datos persistentes.",
+    highlights: ["Citas", "Flujos médicos", "Autenticación", "MongoDB", "Backend cloud"],
+    badges: ["App móvil"],
+  },
+  pokedex: {
+    eyebrow: "Primera build de Pokémon",
+    desc: "Pokédex retro para Android conectada a PokéAPI con búsqueda, estadísticas, evoluciones y exploración de Pokémon.",
+    story: "Esta fue mi primera aplicación seria de Android basada en Pokémon antes de jpokedex2. Conectó una interfaz móvil de inspiración retro con datos de PokéAPI para búsqueda, estadísticas, evoluciones y exploración de Pokémon. El proyecto me ayudó a comprender consumo de APIs, solicitudes asíncronas, navegación y flujos de UI en Android.",
+    highlights: ["PokéAPI", "Búsqueda", "Estadísticas", "Evoluciones", "UI retro"],
+    badges: ["App móvil"],
+  },
+  smartparking: {
+    eyebrow: "Simulación de estacionamiento en tiempo real",
+    desc: "Sistema inteligente de simulación de estacionamiento en tiempo real con flujo probabilístico de vehículos, analítica y dashboards dinámicos de monitoreo.",
+    story: "SmartParking es un simulador web de estacionamiento inteligente construido alrededor de un motor probabilístico de vehículos. El sistema simula entradas y salidas, actualiza la ocupación en tiempo real y almacena información histórica para analítica. El proyecto me ayudó a trabajar con dashboards dinámicos, sincronización frontend/backend y visualización de datos mediante una arquitectura modular.",
+    highlights: ["Motor de simulación", "Ocupación en vivo", "Analítica", "Datos históricos", "Dashboard"],
+  },
+  crudandroid: {
+    title: "CRUD de Usuarios Android",
+    eyebrow: "Fundamentos de Android",
+    desc: "Uno de mis primeros CRUD en Android, enfocado en gestión local de usuarios y fundamentos de SQLite.",
+    story: "Este fue uno de mis primeros proyectos Android durante mi etapa de TSU. Me introdujo al desarrollo nativo en Android, persistencia local y la estructura detrás de flujos básicos de una aplicación. Aunque las capturas y el repositorio originales ya no están disponibles, el proyecto fue un paso importante para entender cómo las interfaces se conectan con datos persistentes.",
+    highlights: ["Gestión de usuarios", "CRUD", "SQLite", "UI Android", "Persistencia local"],
+    badges: ["App móvil"],
+  },
+  daq: {
+    eyebrow: "Arduino + Cloud",
+    desc: "Experimento temprano de monitoreo con Arduino + cloud para visualización de sensores y datos ambientales.",
+    story: "DAQ Sensor Monitor fue uno de mis primeros experimentos combinando sensores físicos, Arduino y visualización de datos conectada a la nube. El objetivo era recopilar información ambiental desde hardware y exponerla mediante una interfaz de software en lugar de mantener los datos aislados en el dispositivo. Me introdujo a conceptos de telemetría, adquisición de sensores, comunicación hardware/software y visualización remota.",
+    highlights: ["Adquisición de sensores", "Telemetría", "Arduino", "Datos cloud", "Monitoreo"],
+  },
+  zarape: {
+    eyebrow: "API Backend",
+    desc: "Proyecto temprano de API CRUD backend enfocado en flujos de restaurante y fundamentos REST.",
+    story: "El Zarape fue uno de mis primeros proyectos enfocados principalmente en desarrollo backend. El sistema exploró flujos orientados a restaurante mediante una API CRUD, combinando lógica de aplicación en Java con persistencia MySQL y operaciones estilo REST. Me ayudó a comprender la estructura de endpoints, flujos de solicitud y respuesta, interacción con bases de datos y separación entre clientes frontend y servicios backend.",
+    highlights: ["Endpoints REST", "Flujo de restaurante", "MySQL", "CRUD", "Arquitectura backend"],
+  },
+  portfolio: {
+    eyebrow: "Marca personal",
+    desc: "Este sitio personal, rediseñado como un portafolio de desarrollador cinematográfico, minimalista y premium.",
+    story: "Este portafolio es donde combino software, diseño, movimiento, personalidad y dirección creativa en una experiencia que se siente como un producto. No voy a incluir aquí el repositorio completo… porque técnicamente ya estás dentro del portafolio.",
+    highlights: ["Diseño responsivo", "Modo oscuro", "Motion", "Marca personal", "Arquitectura de componentes"],
+    badges: ["Web", "Personal"],
+  },
+};
+
+function localizeProject(project, spanish) {
+  if (!spanish) return project;
+
+  const translation = PROJECT_TRANSLATIONS_ES[project.id];
+  if (!translation) return project;
+
+  return {
+    ...project,
+    title: translation.title || project.title,
+    eyebrow: translation.eyebrow || project.eyebrow,
+    desc: translation.desc || project.desc,
+    story: translation.story || project.story,
+    highlights: translation.highlights || project.highlights,
+    badges: project.badges?.map((badge, index) => ({
+      ...badge,
+      label: translation.badges?.[index] || badge.label,
+    })),
+    videos: project.videos?.map((video, index) => ({
+      ...video,
+      title: translation.videos?.[index] || video.title,
+    })),
+  };
+}
+
 /* =========================================================
    COLORS
 ========================================================= */
@@ -1011,6 +1122,9 @@ function AutoCarousel({
   interval = 3300,
   padding = true,
 }) {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   const cleanImages =
     images.filter(Boolean);
 
@@ -1119,14 +1233,14 @@ function AutoCarousel({
                 previous
               }
               accent={accent}
-              label="Previous image"
+              label={spanish ? "Imagen anterior" : "Previous image"}
             />
 
             <CarouselArrow
               direction="right"
               onClick={next}
               accent={accent}
-              label="Next image"
+              label={spanish ? "Imagen siguiente" : "Next image"}
             />
           </>
         )}
@@ -1159,7 +1273,7 @@ function AutoCarousel({
                       ? "w-6 opacity-100"
                       : "w-1.5 opacity-40",
                   ].join(" ")}
-                  aria-label={`Image ${
+                  aria-label={`${spanish ? "Imagen" : "Image"} ${
                     dotIndex +
                     1
                   }`}
@@ -1182,6 +1296,9 @@ function FeaturedProject({
   onOpen,
   mobile = false,
 }) {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   const a =
     getAccent(project.accent);
 
@@ -1269,7 +1386,9 @@ function FeaturedProject({
             : "gap-8 lg:gap-10 p-5 pt-16 md:p-8 md:pt-16 lg:p-10",
 
           !mobile &&
-            "lg:grid-cols-2 items-center",
+            (project.id === "volts"
+              ? "lg:grid-cols-[1.08fr_0.92fr] items-center"
+              : "lg:grid-cols-2 items-center"),
 
           !mobile &&
           reverse
@@ -1287,6 +1406,8 @@ function FeaturedProject({
 
               mobile
                 ? "text-[9px] tracking-[0.24em] mb-2"
+                : project.id === "volts"
+                ? "text-[10px] lg:text-[11px] xl:text-xs tracking-[0.22em] lg:tracking-[0.28em] xl:tracking-[0.32em] mb-3 leading-relaxed max-w-full break-words"
                 : "text-xs tracking-[0.35em] mb-3",
             ].join(" ")}
           >
@@ -1367,7 +1488,7 @@ function FeaturedProject({
                 onOpen(project)
               }
             >
-              View case study
+              {spanish ? "Ver caso de estudio" : "View case study"}
             </ThemeAction>
 
             {!mobile &&
@@ -1430,6 +1551,9 @@ function MobileFeaturedCarousel({
   projects,
   onOpen,
 }) {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   const [index, setIndex] =
     useState(0);
 
@@ -1562,7 +1686,7 @@ function MobileFeaturedCarousel({
             "hover:bg-base-200",
             "active:scale-95",
           ].join(" ")}
-          aria-label="Previous featured project"
+          aria-label={spanish ? "Proyecto destacado anterior" : "Previous featured project"}
         >
           <svg
             viewBox="0 0 24 24"
@@ -1603,7 +1727,7 @@ function MobileFeaturedCarousel({
                       projectIndex
                     )
                   }
-                  aria-label={`Show ${project.title}`}
+                  aria-label={`${spanish ? "Mostrar" : "Show"} ${project.title}`}
                   className={[
                     "relative h-2",
                     "rounded-full",
@@ -1647,7 +1771,7 @@ function MobileFeaturedCarousel({
             "hover:bg-base-200",
             "active:scale-95",
           ].join(" ")}
-          aria-label="Next featured project"
+          aria-label={spanish ? "Proyecto destacado siguiente" : "Next featured project"}
         >
           <svg
             viewBox="0 0 24 24"
@@ -1669,7 +1793,7 @@ function MobileFeaturedCarousel({
 
       <div className="mt-2 flex items-center justify-center gap-2">
         <span className="text-[9px] font-black uppercase tracking-[0.18em] opacity-35">
-          Featured
+          {spanish ? "Destacado" : "Featured"}
         </span>
 
         <span className="text-[10px] font-bold opacity-50">
@@ -1690,175 +1814,139 @@ function MobileFeaturedCarousel({
    MORE PROJECT CARDS
 ========================================================= */
 
+/* =========================================================
+   MORE PROJECT CARDS
+========================================================= */
+
 function MoreProjects({
+  projects,
   onOpen,
 }) {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   return (
     <div className="mt-14 md:mt-20">
       <div className="text-center mb-8">
         <p className="text-xs uppercase tracking-[0.35em] text-[#0171DC] font-bold mb-3">
-          Project Archive
+          {spanish ? "Archivo de Proyectos" : "Project Archive"}
         </p>
 
         <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight">
-          Builds that shaped my
-          progress
+          {spanish
+            ? "Proyectos que marcaron mi progreso"
+            : "Builds that shaped my progress"}
         </h3>
 
         <p className="max-w-2xl mx-auto text-sm md:text-base opacity-70 mt-3">
-          A timeline of real
-          projects, experiments,
-          school systems,
-          personal ideas and
-          collaborations.
+          {spanish
+            ? "Una línea del tiempo de proyectos reales, experimentos, sistemas escolares, ideas personales y colaboraciones."
+            : "A timeline of real projects, experiments, school systems, personal ideas and collaborations."}
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
-        {moreProjects.map(
-          (project) => {
-            const a =
-              getAccent(
-                project.accent
-              );
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 items-stretch">
+        {projects.map((project) => {
+          const a = getAccent(project.accent);
 
-            return (
-              <button
-                key={
-                  project.id
-                }
-                type="button"
-                onClick={() =>
-                  onOpen(
-                    project
-                  )
-                }
-                className={[
-                  "group text-left",
-                  "relative",
-                  "rounded-[1.4rem]",
-                  "md:rounded-[1.75rem]",
-                  "border",
-                  "bg-base-100/75",
-                  "backdrop-blur-xl",
-                  "overflow-hidden",
-                  "shadow-sm",
-                  "transition-all",
-                  "duration-300",
-                  "hover:-translate-y-1",
-                  a.border,
-                ].join(" ")}
-              >
-                <div className="absolute left-3 top-3 z-30 max-w-[calc(100%-24px)]">
-                  <ProjectBadges
-                    badges={
-                      project.badges
-                    }
-                    compact
-                  />
+          return (
+            <button
+              key={project.id}
+              type="button"
+              onClick={() => onOpen(project)}
+              className={[
+                "group text-left relative",
+                "rounded-[1.4rem] md:rounded-[1.75rem]",
+                "border bg-base-100/75 backdrop-blur-xl overflow-hidden",
+                "shadow-sm transition-all duration-300 hover:-translate-y-1",
+                "h-full flex flex-col",
+                a.border,
+              ].join(" ")}
+            >
+              {/* badges */}
+              <div className="absolute left-3 top-3 z-30 max-w-[calc(100%-24px)]">
+                <ProjectBadges
+                  badges={project.badges}
+                  compact
+                />
+              </div>
+
+              {/* visual OG */}
+              <div className="relative aspect-[4/3] overflow-hidden grid place-items-center shrink-0 bg-base-200/50">
+                {/* base rellena completa */}
+                <div className="absolute inset-0 bg-base-200/50" />
+
+                {/* gradiente OG, pero ahora sí rellena todo */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: `linear-gradient(
+                      135deg,
+                      ${a.hex}26 0%,
+                      ${a.hex}12 38%,
+                      rgba(15, 23, 42, 0.28) 68%,
+                      rgba(15, 23, 42, 0.46) 100%
+                    )`,
+                  }}
+                />
+
+                <img
+                  src={project.logo || project.img}
+                  alt={project.title}
+                  className={[
+                    "relative z-10 h-full w-full object-contain",
+                    "transition-transform duration-500 group-hover:scale-105",
+                    project.id === "appmedik"
+                      ? "p-3 scale-[1.15]"
+                      : "p-6 md:p-8",
+                  ].join(" ")}
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none" />
+
+                <span
+                  className={[
+                    "absolute bottom-3 left-3 rounded-full border bg-black/40 backdrop-blur px-2.5 py-1 text-[10px] font-bold",
+                    a.border,
+                    a.text,
+                  ].join(" ")}
+                >
+                  {project.year}
+                </span>
+              </div>
+
+              {/* content */}
+              <div className="p-3 md:p-5 flex flex-1 flex-col">
+                <p
+                  className={[
+                    "text-[9px] md:text-[10px] uppercase tracking-[0.22em] font-bold mb-2",
+                    a.text,
+                  ].join(" ")}
+                >
+                  {project.eyebrow}
+                </p>
+
+                <h4 className="font-extrabold text-sm md:text-lg leading-tight">
+                  {project.title}
+                </h4>
+
+                <p className="text-xs md:text-sm opacity-70 mt-2 leading-relaxed line-clamp-3">
+                  {project.desc}
+                </p>
+
+                <div className="hidden md:flex flex-wrap gap-2 mt-auto pt-4">
+                  {project.tools.slice(0, 3).map((tool) => (
+                    <Tag
+                      key={tool}
+                      tool={tool}
+                      accent={project.accent}
+                    />
+                  ))}
                 </div>
-
-                <div className="relative aspect-[4/3] bg-base-200/50 overflow-hidden grid place-items-center">
-                  <div
-                    className={[
-                      "absolute inset-0",
-                      "bg-gradient-to-br",
-                      a.soft,
-                      "via-transparent",
-                      "to-transparent",
-                    ].join(" ")}
-                  />
-
-                  <img
-                    src={
-                      project.logo ||
-                      project.img
-                    }
-                    alt={
-                      project.title
-                    }
-                    className={[
-                      "relative z-10",
-                      "h-full w-full",
-                      "object-contain",
-                      "transition-transform",
-                      "duration-500",
-                      "group-hover:scale-105",
-
-                      project.id ===
-                      "appmedik"
-                        ? "p-3 scale-[1.15]"
-                        : "p-6 md:p-8",
-                    ].join(" ")}
-                  />
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
-
-                  <span
-                    className={[
-                      "absolute bottom-3",
-                      "left-3 rounded-full",
-                      "border bg-black/40",
-                      "backdrop-blur",
-                      "px-2.5 py-1",
-                      "text-[10px]",
-                      "font-bold",
-                      a.border,
-                      a.text,
-                    ].join(" ")}
-                  >
-                    {project.year}
-                  </span>
-                </div>
-
-                <div className="p-3 md:p-5">
-                  <p
-                    className={[
-                      "text-[9px]",
-                      "md:text-[10px]",
-                      "uppercase",
-                      "tracking-[0.22em]",
-                      "font-bold mb-2",
-                      a.text,
-                    ].join(" ")}
-                  >
-                    {
-                      project.eyebrow
-                    }
-                  </p>
-
-                  <h4 className="font-extrabold text-sm md:text-lg leading-tight">
-                    {project.title}
-                  </h4>
-
-                  <p className="text-xs md:text-sm opacity-70 mt-2 leading-relaxed line-clamp-3">
-                    {project.desc}
-                  </p>
-
-                  <div className="hidden md:flex flex-wrap gap-2 mt-4">
-                    {project.tools
-                      .slice(0, 3)
-                      .map(
-                        (tool) => (
-                          <Tag
-                            key={
-                              tool
-                            }
-                            tool={
-                              tool
-                            }
-                            accent={
-                              project.accent
-                            }
-                          />
-                        )
-                      )}
-                  </div>
-                </div>
-              </button>
-            );
-          }
-        )}
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -1871,6 +1959,9 @@ function MoreProjects({
 function DesktopBrandPanel({
   project,
 }) {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   const a =
     getAccent(project.accent);
 
@@ -1926,7 +2017,7 @@ function DesktopBrandPanel({
 
         {project.archive && (
           <span className="mt-5 badge badge-outline border-white/30 text-white/70">
-            Archived Build
+            {spanish ? "Proyecto archivado" : "Archived Build"}
           </span>
         )}
       </div>
@@ -1969,6 +2060,9 @@ function DesktopProjectCarousel({
 function DesktopProjectContent({
   project,
 }) {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   const a =
     getAccent(project.accent);
 
@@ -1984,7 +2078,7 @@ function DesktopProjectContent({
             a.text,
           ].join(" ")}
         >
-          Project overview
+          {spanish ? "Resumen del proyecto" : "Project overview"}
         </p>
 
         <p className="mt-2 text-[12px] xl:text-[13px] leading-relaxed opacity-80">
@@ -2052,11 +2146,13 @@ function DesktopProjectContent({
                 a.text,
               ].join(" ")}
             >
-              Project archive
+              {spanish ? "Archivo del proyecto" : "Project archive"}
             </p>
 
             <p className="mt-2 text-xs opacity-65 leading-relaxed">
-              Original screenshots and repository files are no longer available. This build remains part of my development timeline and represents the foundations that later evolved into more complete systems.
+              {spanish
+                ? "Las capturas originales y los archivos del repositorio ya no están disponibles. Este proyecto sigue formando parte de mi trayectoria de desarrollo y representa las bases que después evolucionaron hacia sistemas más completos."
+                : "Original screenshots and repository files are no longer available. This build remains part of my development timeline and represents the foundations that later evolved into more complete systems."}
             </p>
           </div>
         </div>
@@ -2213,6 +2309,9 @@ function MobileVisual({
 function MobileProjectContent({
   project,
 }) {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   const a =
     getAccent(project.accent);
 
@@ -2226,7 +2325,7 @@ function MobileProjectContent({
           a.text,
         ].join(" ")}
       >
-        Project overview
+        {spanish ? "Resumen del proyecto" : "Project overview"}
       </p>
 
       <p className="mt-2 text-[11px] sm:text-xs opacity-75 leading-relaxed line-clamp-5">
@@ -2398,26 +2497,12 @@ function VoltsVideoCarousel({
 function VoltsMobile({
   project,
 }) {
-  const app =
-    project.videos.find(
-      (video) =>
-        video.title ===
-        "Android App"
-    );
+  const { language } = useLanguage();
+  const spanish = language === "es";
 
-  const robot =
-    project.videos.find(
-      (video) =>
-        video.title ===
-        "Robot & IoT"
-    );
-
-  const web =
-    project.videos.find(
-      (video) =>
-        video.title ===
-        "Enterprise Web Platform"
-    );
+  const robot = project.videos?.[0];
+  const app = project.videos?.[1];
+  const web = project.videos?.[2];
 
   const media = [
     app && {
@@ -2432,7 +2517,7 @@ function VoltsMobile({
 
     {
       type: "image",
-      title: "VOLTS Poster",
+      title: spanish ? "Póster VOLTS" : "VOLTS Poster",
       src:
         project.modalHero,
     },
@@ -2444,7 +2529,7 @@ function VoltsMobile({
 
     {
       type: "image",
-      title: "VOLTS Robot",
+      title: spanish ? "Robot VOLTS" : "VOLTS Robot",
       src: project.img,
     },
 
@@ -2454,7 +2539,7 @@ function VoltsMobile({
         index
       ) => ({
         type: "image",
-        title: `VOLTS Robot ${
+        title: `${spanish ? "Robot VOLTS" : "VOLTS Robot"} ${
           index + 2
         }`,
         src,
@@ -2600,14 +2685,14 @@ function VoltsMobile({
               previous
             }
             accent="green"
-            label="Previous media"
+            label={spanish ? "Media anterior" : "Previous media"}
           />
 
           <CarouselArrow
             direction="right"
             onClick={next}
             accent="green"
-            label="Next media"
+            label={spanish ? "Media siguiente" : "Next media"}
           />
 
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
@@ -2651,6 +2736,9 @@ function VoltsMobile({
 function VoltsDesktop({
   project,
 }) {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   const a =
     getAccent(project.accent);
 
@@ -2708,7 +2796,7 @@ function VoltsDesktop({
               a.text,
             ].join(" ")}
           >
-            Project overview
+            {spanish ? "Resumen del proyecto" : "Project overview"}
           </p>
 
           <p className="mt-2 text-[12px] xl:text-[13px] opacity-75 leading-relaxed">
@@ -2771,6 +2859,9 @@ function ProjectModal({
   project,
   onClose,
 }) {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   useEffect(() => {
     if (!project) {
       return undefined;
@@ -2861,7 +2952,7 @@ function ProjectModal({
             "bg-base-100/90",
             "backdrop-blur",
           ].join(" ")}
-          aria-label="Close modal"
+          aria-label={spanish ? "Cerrar modal" : "Close modal"}
         >
           ✕
         </button>
@@ -2910,19 +3001,24 @@ function ProjectModal({
 ========================================================= */
 
 function MusicPage() {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   return (
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8">
         <p className="text-xs uppercase tracking-[0.35em] text-red-500 font-bold mb-3">
-          Music
+          {spanish ? "Música" : "Music"}
         </p>
 
         <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight">
-          Creative side
+          {spanish ? "Lado creativo" : "Creative side"}
         </h3>
 
         <p className="max-w-2xl mx-auto text-sm md:text-base opacity-70 mt-3">
-          A minimal space for beats and ideas outside code.
+          {spanish
+            ? "Un espacio minimalista para beats e ideas fuera del código."
+            : "A minimal space for beats and ideas outside code."}
         </p>
       </div>
 
@@ -2964,7 +3060,9 @@ function MusicPage() {
                   type="audio/mpeg"
                 />
 
-                Your browser does not support audio.
+                {spanish
+                  ? "Tu navegador no soporta audio."
+                  : "Your browser does not support audio."}
               </audio>
             </div>
           </div>
@@ -2979,6 +3077,19 @@ function MusicPage() {
 ========================================================= */
 
 export default function WorkSection() {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
+  const localizedProjects = useMemo(
+    () => projects.map((project) => localizeProject(project, spanish)),
+    [spanish]
+  );
+
+  const localizedMoreProjects = useMemo(
+    () => moreProjects.map((project) => localizeProject(project, spanish)),
+    [spanish]
+  );
+
   const [
     activeTab,
     setActiveTab,
@@ -3016,11 +3127,11 @@ export default function WorkSection() {
   const featuredProjects =
     useMemo(
       () =>
-        projects.filter(
+        localizedProjects.filter(
           (project) =>
             project.featured
         ),
-      []
+      [localizedProjects]
     );
 
   return (
@@ -3028,21 +3139,19 @@ export default function WorkSection() {
       <div className="max-w-6xl mx-auto px-1 md:px-4">
         <div className="text-center mb-10 md:mb-14">
           <p className="text-xs uppercase tracking-[0.35em] text-[#0171DC] font-bold mb-3">
-            Work
+            {spanish ? "Proyectos" : "Work"}
           </p>
 
           <h2 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">
-            Most recent builds with
-            product identity.
+            {spanish
+              ? "Mis proyectos más recientes con identidad de producto."
+              : "Most recent builds with product identity."}
           </h2>
 
           <p className="max-w-3xl mx-auto text-sm md:text-base opacity-70 mt-4 leading-relaxed">
-            A curated view of my
-            newest and strongest
-            builds first, followed by
-            the projects that shaped
-            my progress as a
-            developer.
+            {spanish
+              ? "Una selección de mis proyectos más nuevos y sólidos, seguida por los proyectos que marcaron mi progreso como desarrollador."
+              : "A curated view of my newest and strongest builds first, followed by the projects that shaped my progress as a developer."}
           </p>
         </div>
 
@@ -3068,7 +3177,7 @@ export default function WorkSection() {
                   : "border-transparent text-[#0171DC] bg-[#0171DC]/10",
               ].join(" ")}
             >
-              Dev Work
+              {spanish ? "Desarrollo" : "Dev Work"}
             </button>
 
             <button
@@ -3091,7 +3200,7 @@ export default function WorkSection() {
                   : "border-transparent text-red-500 bg-red-500/10",
               ].join(" ")}
             >
-              Music
+              {spanish ? "Música" : "Music"}
             </button>
           </div>
         </div>
@@ -3145,6 +3254,7 @@ export default function WorkSection() {
             </div>
 
             <MoreProjects
+              projects={localizedMoreProjects}
               onOpen={
                 setSelectedProject
               }

@@ -1,8 +1,40 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* =========================================================
+   BROWSER COLOR SCHEME
+========================================================= */
+
+/*
+  La página ya controla sus propios temas.
+
+  "only light" le indica a navegadores Chromium/Opera que
+  cuando nuestra página está en modo light no intenten
+  convertirla automáticamente a dark mode.
+*/
+
 html {
   scroll-behavior: auto;
+  color-scheme: only light;
+}
+
+html[data-theme="light"] {
+  color-scheme: only light;
+}
+
+html[data-theme="skull"] {
+  color-scheme: dark;
+}
+
+/*
+  Evita que modos de color forzados modifiquen contenido
+  gráfico cuando sea posible.
+*/
+img,
+picture,
+video,
+canvas {
+  forced-color-adjust: none;
 }
 
 body {
@@ -17,7 +49,10 @@ body {
   text-align: initial;
 }
 
-/* Scrollbar hidden */
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -27,7 +62,10 @@ body {
   display: none;
 }
 
-/* Modals centrados */
+/* =========================================================
+   MODALS
+========================================================= */
+
 .modal {
   position: fixed !important;
   inset: 0 !important;
@@ -52,7 +90,10 @@ body {
   max-height: 60vh;
 }
 
-/* Botones limpios */
+/* =========================================================
+   BUTTONS
+========================================================= */
+
 .btn-cv-blue {
   border-color: #0171dc !important;
   color: #0171dc !important;
@@ -93,6 +134,7 @@ body {
 }
 
 /* Close buttons rojos, pero sin neon */
+
 .btn.btn-error,
 .btn.btn-outline.btn-error {
   border-radius: 999px !important;
@@ -108,15 +150,24 @@ body {
   box-shadow: none !important;
 }
 
-/* Soft skills marquee */
+/* =========================================================
+   SOFT SKILLS MARQUEE
+========================================================= */
+
 @keyframes softskills-scroll {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }
 }
+
+/* =========================================================
+   SECTION ENTER
+========================================================= */
+
 @keyframes section-enter {
   from {
     opacity: 0;
@@ -134,6 +185,11 @@ body {
 .animate-section-enter {
   animation: section-enter 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* =========================================================
+   MODAL ENTER
+========================================================= */
+
 @keyframes modal-pop {
   from {
     opacity: 0;
@@ -149,6 +205,11 @@ body {
 .animate-modal-pop {
   animation: modal-pop 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* =========================================================
+   HEADER LOGO THEMES
+========================================================= */
+
 .theme-logo-skull {
   display: none;
 }

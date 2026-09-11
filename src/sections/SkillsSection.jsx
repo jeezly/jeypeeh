@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 function SkillGrid({ items, compact = false }) {
   return (
@@ -41,6 +42,7 @@ function CategoryBlock({ group, compact = false }) {
         <div className={`text-sm font-bold ${group.accent}`}>
           {group.title}
         </div>
+
         <p className="text-xs opacity-65 mt-1">{group.description}</p>
       </div>
 
@@ -50,7 +52,11 @@ function CategoryBlock({ group, compact = false }) {
 }
 
 export default function SkillsSection() {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   const ref = useRef(null);
+
   const [visible, setVisible] = useState(false);
   const [activeGroup, setActiveGroup] = useState("languages");
   const [mobileDetail, setMobileDetail] = useState(false);
@@ -67,9 +73,10 @@ export default function SkillsSection() {
     () => [
       {
         id: "languages",
-        title: "Languages",
-        description:
-          "Core languages I use or I’m currently learning for web, mobile, school, and backend projects.",
+        title: spanish ? "Lenguajes" : "Languages",
+        description: spanish
+          ? "Lenguajes principales que utilizo o que actualmente estoy aprendiendo para proyectos web, móviles, escolares y backend."
+          : "Core languages I use or I’m currently learning for web, mobile, school, and backend projects.",
         accent: "text-yellow-500",
         border: "border-yellow-400",
         items: [
@@ -86,8 +93,9 @@ export default function SkillsSection() {
       {
         id: "web",
         title: "Web & Frontend",
-        description:
-          "UI frameworks, component libraries, and styling tools for modern responsive interfaces.",
+        description: spanish
+          ? "Frameworks de interfaz, librerías de componentes y herramientas de estilos para interfaces responsivas modernas."
+          : "UI frameworks, component libraries, and styling tools for modern responsive interfaces.",
         accent: "text-cyan-500",
         border: "border-cyan-400",
         items: [
@@ -103,8 +111,9 @@ export default function SkillsSection() {
       {
         id: "backend",
         title: "Backend",
-        description:
-          "Backend tools I have used for APIs, server-side logic, and database-connected systems.",
+        description: spanish
+          ? "Herramientas backend que he utilizado para APIs, lógica del servidor y sistemas conectados a bases de datos."
+          : "Backend tools I have used for APIs, server-side logic, and database-connected systems.",
         accent: "text-green-500",
         border: "border-green-400",
         items: [
@@ -117,9 +126,10 @@ export default function SkillsSection() {
       },
       {
         id: "data",
-        title: "Data & Storage",
-        description:
-          "Databases, data formats, exports, and recovery practices I’ve worked with.",
+        title: spanish ? "Datos & Almacenamiento" : "Data & Storage",
+        description: spanish
+          ? "Bases de datos, formatos de datos, exportaciones y prácticas de recuperación con las que he trabajado."
+          : "Databases, data formats, exports, and recovery practices I’ve worked with.",
         accent: "text-emerald-500",
         border: "border-emerald-400",
         items: [
@@ -135,9 +145,10 @@ export default function SkillsSection() {
       },
       {
         id: "mobile",
-        title: "Mobile",
-        description:
-          "Mobile development tools I use for Android and mobile app prototypes.",
+        title: spanish ? "Móvil" : "Mobile",
+        description: spanish
+          ? "Herramientas de desarrollo móvil que utilizo para Android y prototipos de aplicaciones."
+          : "Mobile development tools I use for Android and mobile app prototypes.",
         accent: "text-lime-500",
         border: "border-lime-400",
         items: [
@@ -149,8 +160,9 @@ export default function SkillsSection() {
       {
         id: "dotnet",
         title: ".NET & Razor",
-        description:
-          "Tools I’m learning this quarter for Razor Pages and Visual Studio workflows.",
+        description: spanish
+          ? "Herramientas que actualmente estoy aprendiendo para Razor Pages y flujos de trabajo con Visual Studio."
+          : "Tools I’m learning this quarter for Razor Pages and Visual Studio workflows.",
         accent: "text-purple-500",
         border: "border-purple-400",
         items: [
@@ -164,9 +176,10 @@ export default function SkillsSection() {
       },
       {
         id: "tools",
-        title: "Tools",
-        description:
-          "Development environments, testing tools, deployment platforms, and workflow apps.",
+        title: spanish ? "Herramientas" : "Tools",
+        description: spanish
+          ? "Entornos de desarrollo, herramientas de pruebas, plataformas de despliegue y aplicaciones de flujo de trabajo."
+          : "Development environments, testing tools, deployment platforms, and workflow apps.",
         accent: "text-blue-500",
         border: "border-blue-400",
         items: [
@@ -183,9 +196,10 @@ export default function SkillsSection() {
       },
       {
         id: "cloud",
-        title: "Cloud & Services",
-        description:
-          "External platforms and cloud-connected services I’ve integrated or used in projects.",
+        title: spanish ? "Cloud & Servicios" : "Cloud & Services",
+        description: spanish
+          ? "Plataformas externas y servicios conectados a la nube que he integrado o utilizado en distintos proyectos."
+          : "External platforms and cloud-connected services I’ve integrated or used in projects.",
         accent: "text-orange-500",
         border: "border-orange-400",
         items: [
@@ -200,8 +214,9 @@ export default function SkillsSection() {
       {
         id: "iot",
         title: "Arduino & IoT",
-        description:
-          "Basic hardware, sensors, and cloud-connected ideas for school and prototype projects.",
+        description: spanish
+          ? "Hardware básico, sensores e ideas conectadas a la nube para proyectos escolares y prototipos."
+          : "Basic hardware, sensors, and cloud-connected ideas for school and prototype projects.",
         accent: "text-red-500",
         border: "border-red-400",
         items: [
@@ -212,9 +227,10 @@ export default function SkillsSection() {
       },
       {
         id: "creative",
-        title: "Creative",
-        description:
-          "Design, music, and creative software that supports the visual side of my work.",
+        title: spanish ? "Creativo" : "Creative",
+        description: spanish
+          ? "Software de diseño, música y creatividad que complementa la parte visual de mi trabajo."
+          : "Design, music, and creative software that supports the visual side of my work.",
         accent: "text-pink-500",
         border: "border-pink-400",
         items: [
@@ -229,9 +245,10 @@ export default function SkillsSection() {
       },
       {
         id: "systems",
-        title: "Systems",
-        description:
-          "Operating systems and support tools I use when building or testing projects.",
+        title: spanish ? "Sistemas" : "Systems",
+        description: spanish
+          ? "Sistemas operativos y herramientas de soporte que utilizo al desarrollar o probar proyectos."
+          : "Operating systems and support tools I use when building or testing projects.",
         accent: "text-zinc-400",
         border: "border-zinc-400",
         items: [
@@ -241,7 +258,7 @@ export default function SkillsSection() {
         ],
       },
     ],
-    []
+    [spanish]
   );
 
   const groups = useMemo(
@@ -249,42 +266,68 @@ export default function SkillsSection() {
       ...baseGroups,
       {
         id: "all",
-        title: "All",
-        description:
-          "A complete view of my current technical toolkit grouped by category.",
+        title: spanish ? "Todo" : "All",
+        description: spanish
+          ? "Vista completa de mi toolkit técnico actual, agrupado por categorías."
+          : "A complete view of my current technical toolkit grouped by category.",
         accent: "text-[#0171DC]",
         border: "border-[#0171DC]",
         items: [],
       },
     ],
-    [baseGroups]
+    [baseGroups, spanish]
   );
 
-  const softSkills = [
-    "Leadership",
-    "Communication",
-    "Teamwork",
-    "Problem solving",
-    "Adaptability",
-    "Creativity",
-    "Time management",
-    "Ownership",
-    "Growth mindset",
-    "Critical thinking",
-    "Collaboration",
-    "Decision making",
-    "Conflict resolution",
-    "Emotional intelligence",
-    "Attention to detail",
-    "Learning agility",
-    "Resilience",
-    "Networking",
-    "Mentorship",
-    "Initiative",
-  ];
+  const softSkills = spanish
+    ? [
+        "Liderazgo",
+        "Comunicación",
+        "Trabajo en equipo",
+        "Resolución de problemas",
+        "Adaptabilidad",
+        "Creatividad",
+        "Gestión del tiempo",
+        "Responsabilidad",
+        "Mentalidad de crecimiento",
+        "Pensamiento crítico",
+        "Colaboración",
+        "Toma de decisiones",
+        "Resolución de conflictos",
+        "Inteligencia emocional",
+        "Atención al detalle",
+        "Agilidad de aprendizaje",
+        "Resiliencia",
+        "Networking",
+        "Mentoría",
+        "Iniciativa",
+      ]
+    : [
+        "Leadership",
+        "Communication",
+        "Teamwork",
+        "Problem solving",
+        "Adaptability",
+        "Creativity",
+        "Time management",
+        "Ownership",
+        "Growth mindset",
+        "Critical thinking",
+        "Collaboration",
+        "Decision making",
+        "Conflict resolution",
+        "Emotional intelligence",
+        "Attention to detail",
+        "Learning agility",
+        "Resilience",
+        "Networking",
+        "Mentorship",
+        "Initiative",
+      ];
 
   const current = useMemo(
-    () => groups.find((group) => group.id === activeGroup) || groups[0],
+    () =>
+      groups.find((group) => group.id === activeGroup) ||
+      groups[0],
     [groups, activeGroup]
   );
 
@@ -300,20 +343,26 @@ export default function SkillsSection() {
       ref={ref}
       className={[
         "transition-all duration-700 ease-out",
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+        visible
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-4",
       ].join(" ")}
     >
       <div className="text-center mb-10">
         <p className="text-xs uppercase tracking-[0.35em] text-[#0171DC] font-bold mb-3">
-          Skills
+          {spanish ? "Habilidades" : "Skills"}
         </p>
 
         <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
-          My technical toolkit
+          {spanish
+            ? "Mi toolkit técnico"
+            : "My technical toolkit"}
         </h2>
 
         <p className="max-w-2xl mx-auto text-sm md:text-base opacity-70">
-          A cleaner view of the technologies, tools, and creative software I use.
+          {spanish
+            ? "Una vista más clara de las tecnologías, herramientas y software creativo que utilizo."
+            : "A cleaner view of the technologies, tools, and creative software I use."}
         </p>
       </div>
 
@@ -343,8 +392,12 @@ export default function SkillsSection() {
 
                   <div className="text-[11px] opacity-60 mt-1">
                     {group.id === "all"
-                      ? `${baseGroups.length} categories`
-                      : `${group.items.length} items`}
+                      ? spanish
+                        ? `${baseGroups.length} categorías`
+                        : `${baseGroups.length} categories`
+                      : spanish
+                        ? `${group.items.length} elementos`
+                        : `${group.items.length} items`}
                   </div>
                 </button>
               );
@@ -356,7 +409,7 @@ export default function SkillsSection() {
           <div className="flex items-end justify-between gap-4 mb-6 shrink-0">
             <div>
               <div className={`text-sm font-bold ${current.accent}`}>
-                Selected category
+                {spanish ? "Categoría seleccionada" : "Selected category"}
               </div>
 
               <h3 className="text-2xl md:text-3xl font-extrabold">
@@ -376,8 +429,12 @@ export default function SkillsSection() {
               ].join(" ")}
             >
               {isAll
-                ? `${baseGroups.length} categories`
-                : `${current.items.length} tools`}
+                ? spanish
+                  ? `${baseGroups.length} categorías`
+                  : `${baseGroups.length} categories`
+                : spanish
+                  ? `${current.items.length} herramientas`
+                  : `${current.items.length} tools`}
             </span>
           </div>
 
@@ -410,8 +467,12 @@ export default function SkillsSection() {
 
                 <div className="text-[11px] opacity-60 mt-1">
                   {group.id === "all"
-                    ? `${baseGroups.length} categories`
-                    : `${group.items.length} items`}
+                    ? spanish
+                      ? `${baseGroups.length} categorías`
+                      : `${baseGroups.length} categories`
+                    : spanish
+                      ? `${group.items.length} elementos`
+                      : `${group.items.length} items`}
                 </div>
               </button>
             ))}
@@ -421,12 +482,18 @@ export default function SkillsSection() {
             <div className="flex items-start justify-between gap-3 mb-5">
               <div className="min-w-0">
                 <div className={`text-sm font-bold ${current.accent}`}>
-                  Selected category
+                  {spanish
+                    ? "Categoría seleccionada"
+                    : "Selected category"}
                 </div>
 
-                <h3 className="text-2xl font-extrabold">{current.title}</h3>
+                <h3 className="text-2xl font-extrabold">
+                  {current.title}
+                </h3>
 
-                <p className="text-sm opacity-70 mt-2">{current.description}</p>
+                <p className="text-sm opacity-70 mt-2">
+                  {current.description}
+                </p>
               </div>
 
               <button
@@ -434,14 +501,18 @@ export default function SkillsSection() {
                 onClick={() => setMobileDetail(false)}
                 className="btn btn-outline btn-sm shrink-0 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white"
               >
-                Back
+                {spanish ? "Volver" : "Back"}
               </button>
             </div>
 
             <div className="max-h-[430px] overflow-y-auto pr-1 scrollbar-hide">
               {isAll ? (
                 baseGroups.map((group) => (
-                  <CategoryBlock key={group.id} group={group} compact />
+                  <CategoryBlock
+                    key={group.id}
+                    group={group}
+                    compact
+                  />
                 ))
               ) : (
                 <SkillGrid items={current.items} compact />
@@ -453,10 +524,14 @@ export default function SkillsSection() {
 
       <div className="mt-10 rounded-[2rem] border border-base-300 bg-base-100/75 backdrop-blur-xl p-5 md:p-7 shadow-sm overflow-hidden">
         <div className="mb-5 text-center">
-          <h3 className="text-xl md:text-2xl font-extrabold">Soft Skills</h3>
+          <h3 className="text-xl md:text-2xl font-extrabold">
+            {spanish ? "Habilidades Blandas" : "Soft Skills"}
+          </h3>
 
           <p className="text-sm opacity-70">
-            Personal strengths I bring to teams and projects.
+            {spanish
+              ? "Fortalezas personales que aporto a equipos y proyectos."
+              : "Personal strengths I bring to teams and projects."}
           </p>
         </div>
 

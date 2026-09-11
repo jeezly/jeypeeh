@@ -16,8 +16,17 @@
 
     <link rel="canonical" href="https://jeypeeh.com/" />
 
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/favicon.png" />
+    <!-- Favicon dinámico según el tema del sistema -->
+    <link
+      id="favicon"
+      rel="icon"
+      type="image/png"
+      href="/img/LogojeypeehWhite.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="/img/LogojeypeehWhite.png"
+    />
 
     <meta property="og:title" content="JeyPeeh | Software Developer & Digital Creative" />
     <meta
@@ -26,7 +35,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://jeypeeh.com/" />
-    <meta property="og:image" content="https://jeypeeh.com/favicon.png" />
+    <meta property="og:image" content="https://jeypeeh.com/img/LogojeypeehWhite.png" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="JeyPeeh | Software Developer & Digital Creative" />
@@ -34,7 +43,7 @@
       name="twitter:description"
       content="Software developer, digital creative, web designer, app developer, and music producer."
     />
-    <meta name="twitter:image" content="https://jeypeeh.com/favicon.png" />
+    <meta name="twitter:image" content="https://jeypeeh.com/img/LogojeypeehWhite.png" />
 
     <script type="application/ld+json">
       {
@@ -43,12 +52,39 @@
         "name": "Juan Pablo García Hernández",
         "alternateName": "JeyPeeh",
         "url": "https://jeypeeh.com/",
-        "image": "https://jeypeeh.com/favicon.png",
+        "image": "https://jeypeeh.com/img/LogojeypeehWhite.png",
         "jobTitle": "Software Developer",
         "sameAs": [
           "https://github.com/jeezly"
         ]
       }
+    </script>
+
+    <script>
+      (() => {
+        const lightIcon = "/img/LogojeypeehWhite.png";
+        const darkIcon = "/img/LogoJeypeeh.png";
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+        const updateFavicon = (isDark) => {
+          const favicon = document.getElementById("favicon");
+          if (favicon) {
+            favicon.href = isDark ? darkIcon : lightIcon;
+          }
+        };
+
+        updateFavicon(media.matches);
+
+        if (media.addEventListener) {
+          media.addEventListener("change", (event) => {
+            updateFavicon(event.matches);
+          });
+        } else if (media.addListener) {
+          media.addListener((event) => {
+            updateFavicon(event.matches);
+          });
+        }
+      })();
     </script>
   </head>
 

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const baseIcon = "h-7 w-7 md:h-8 md:w-8";
 
@@ -21,6 +22,7 @@ const PaletteIcon = ({ className = "" }) => (
       {...stroke}
       d="M12 3a9 9 0 100 18 3 3 0 003-3 2 2 0 012-2h1a3 3 0 000-6h-1a2 2 0 01-2-2 3 3 0 00-3-3z"
     />
+
     <circle cx="7.5" cy="10.5" r="1" fill="currentColor" />
     <circle cx="9.5" cy="14" r="1" fill="currentColor" />
     <circle cx="12.5" cy="8.5" r="1" fill="currentColor" />
@@ -61,7 +63,7 @@ const MusicIcon = ({ className = "" }) => (
 );
 
 /* =========================================================
-   SECTION WRAPPER
+   SECTION
 ========================================================= */
 
 function Section({ title, children }) {
@@ -186,7 +188,6 @@ function ProgressProjectCard({
         a.hoverShadow,
       ].join(" ")}
     >
-      {/* Glow */}
       <div
         className={[
           "pointer-events-none absolute",
@@ -200,7 +201,6 @@ function ProgressProjectCard({
       />
 
       <div className="relative">
-        {/* TOP */}
         <div className="flex items-center justify-between gap-2">
           <div className="flex min-w-0 items-center gap-2 md:gap-3">
             <span
@@ -240,7 +240,6 @@ function ProgressProjectCard({
           </span>
         </div>
 
-        {/* PROJECT INFO */}
         {logo ? (
           <div className="mt-2.5 flex items-center gap-2.5 md:mt-5 md:gap-3">
             <div
@@ -278,12 +277,10 @@ function ProgressProjectCard({
           </h4>
         )}
 
-        {/* DESCRIPTION */}
         <p className="mt-1 text-[10px] leading-4 opacity-55 md:mt-2 md:text-sm md:leading-relaxed">
           {description}
         </p>
 
-        {/* PROGRESS */}
         <div className="mt-2.5 md:mt-5">
           <div className="h-1.5 overflow-hidden rounded-full bg-base-300 md:h-2">
             <div
@@ -298,7 +295,6 @@ function ProgressProjectCard({
           </div>
         </div>
 
-        {/* BUTTON */}
         {buttonLabel && onButtonClick && (
           <div className="mt-2.5 flex justify-end md:mt-5">
             <button
@@ -329,8 +325,14 @@ function ProgressProjectCard({
    ABOUT MODAL
 ========================================================= */
 
-function AboutModal({ item, onClose, onSelectSection }) {
+function AboutModal({
+  item,
+  onClose,
+  onSelectSection,
+  language,
+}) {
   const closeButtonRef = useRef(null);
+  const spanish = language === "es";
 
   useEffect(() => {
     if (!item) {
@@ -374,15 +376,13 @@ function AboutModal({ item, onClose, onSelectSection }) {
       aria-modal="true"
       aria-labelledby={`about-modal-${item.id}`}
     >
-      {/* BACKDROP */}
       <button
         type="button"
-        aria-label="Close modal"
+        aria-label={spanish ? "Cerrar modal" : "Close modal"}
         onClick={onClose}
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
       />
 
-      {/* MODAL */}
       <div
         className={[
           "relative z-10 w-full max-w-3xl",
@@ -396,7 +396,6 @@ function AboutModal({ item, onClose, onSelectSection }) {
             : "max-h-[92svh]",
         ].join(" ")}
       >
-        {/* HEADER */}
         <div
           className="
             relative z-20
@@ -410,7 +409,7 @@ function AboutModal({ item, onClose, onSelectSection }) {
         >
           <div>
             <p className="text-[8px] font-bold uppercase tracking-[0.22em] opacity-45 md:text-[10px]">
-              About
+              {spanish ? "Sobre mí" : "About"}
             </p>
 
             <h3
@@ -435,13 +434,12 @@ function AboutModal({ item, onClose, onSelectSection }) {
               hover:bg-base-300
               md:h-9 md:w-9
             "
-            aria-label="Close"
+            aria-label={spanish ? "Cerrar" : "Close"}
           >
             ✕
           </button>
         </div>
 
-        {/* CONTENT */}
         <div
           className={
             isProjects
@@ -486,6 +484,9 @@ function AboutModal({ item, onClose, onSelectSection }) {
 ========================================================= */
 
 export default function AboutSection({ onSelectSection }) {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   const [selectedItem, setSelectedItem] = useState(null);
 
   const aboutRef = useRef(null);
@@ -525,7 +526,7 @@ export default function AboutSection({ onSelectSection }) {
     {
       id: "graphic",
       Icon: PaletteIcon,
-      label: "Graphic Design",
+      label: spanish ? "Diseño Gráfico" : "Graphic Design",
       color: "text-white",
       bg: "bg-zinc-900",
     },
@@ -533,7 +534,7 @@ export default function AboutSection({ onSelectSection }) {
     {
       id: "web",
       Icon: LayoutIcon,
-      label: "Web Design",
+      label: spanish ? "Diseño Web" : "Web Design",
       color: "text-blue-500",
       bg: "bg-blue-500/10",
     },
@@ -549,7 +550,7 @@ export default function AboutSection({ onSelectSection }) {
     {
       id: "application",
       Icon: AppIcon,
-      label: "Application",
+      label: spanish ? "Aplicaciones" : "Application",
       color: "text-green-500",
       bg: "bg-green-500/10",
     },
@@ -557,11 +558,101 @@ export default function AboutSection({ onSelectSection }) {
     {
       id: "producer",
       Icon: MusicIcon,
-      label: "Producer",
+      label: spanish ? "Productor" : "Producer",
       color: "text-red-500",
       bg: "bg-red-500/10",
     },
   ];
+
+  /* =========================================================
+     HOBBIES DATA
+  ========================================================= */
+
+  const hobbies = spanish
+    ? [
+        {
+          title: "Skateboarding",
+          text: "Me ayuda a despejar la mente y mantenerme activo.",
+          label: "MOVER",
+        },
+        {
+          title: "Producción musical",
+          text: "Creo beats y experimento con diferentes géneros.",
+          label: "CREAR",
+        },
+        {
+          title: "Anime y películas",
+          text: "Historias, mundos e ideas visuales que me inspiran.",
+          label: "VER",
+        },
+        {
+          title: "Conocer personas",
+          text: "Disfruto escuchar diferentes historias y perspectivas.",
+          label: "CONECTAR",
+        },
+        {
+          title: "Aprender",
+          text: "Siempre intento entender o construir algo nuevo.",
+          label: "APRENDER",
+        },
+        {
+          title: "Naturaleza",
+          text: "Caminar, los bosques y la playa me ayudan a reiniciarme.",
+          label: "RESET",
+        },
+        {
+          title: "Basketball",
+          text: "Otra forma en la que disfruto mantenerme activo y divertirme.",
+          label: "JUGAR",
+        },
+        {
+          title: "Tecnología",
+          text: "Realmente disfruto descubrir cómo funcionan las cosas.",
+          label: "CONSTRUIR",
+        },
+      ]
+    : [
+        {
+          title: "Skateboarding",
+          text: "Clears my mind and keeps me moving.",
+          label: "MOVE",
+        },
+        {
+          title: "Music production",
+          text: "I make beats and experiment with different genres.",
+          label: "CREATE",
+        },
+        {
+          title: "Anime & movies",
+          text: "Stories, worlds and visual ideas that inspire me.",
+          label: "WATCH",
+        },
+        {
+          title: "Meeting people",
+          text: "I enjoy hearing different stories and perspectives.",
+          label: "CONNECT",
+        },
+        {
+          title: "Learning",
+          text: "I’m always trying to understand or build something new.",
+          label: "LEARN",
+        },
+        {
+          title: "Nature",
+          text: "Hiking, forests and the beach help me reset.",
+          label: "RESET",
+        },
+        {
+          title: "Basketball",
+          text: "Another way I like to stay active and have fun.",
+          label: "PLAY",
+        },
+        {
+          title: "Technology",
+          text: "I genuinely enjoy discovering how things work.",
+          label: "BUILD",
+        },
+      ];
 
   /* =========================================================
      MORE ABOUT ME
@@ -575,7 +666,9 @@ export default function AboutSection({ onSelectSection }) {
     {
       id: "hobbies",
 
-      title: "Hobbies & Lifestyle",
+      title: spanish
+        ? "Hobbies & Estilo de Vida"
+        : "Hobbies & Lifestyle",
 
       image: "/img/jeypeehHobbies.png",
 
@@ -587,69 +680,24 @@ export default function AboutSection({ onSelectSection }) {
         <div>
           <div className="mb-5">
             <p className="mb-2 text-xs font-black uppercase tracking-[0.22em] text-[#0171DC]">
-              Outside the screen
+              {spanish ? "Fuera de la pantalla" : "Outside the screen"}
             </p>
 
             <h3 className="text-2xl font-black tracking-tight md:text-3xl">
-              Things that keep me moving.
+              {spanish
+                ? "Cosas que me mantienen en movimiento."
+                : "Things that keep me moving."}
             </h3>
 
             <p className="mt-2 text-sm leading-relaxed opacity-65">
-              When I&apos;m not coding, I like doing things that keep me
-              active, curious and creative.
+              {spanish
+                ? "Cuando no estoy programando, me gusta hacer cosas que me mantienen activo, curioso y creativo."
+                : "When I'm not coding, I like doing things that keep me active, curious and creative."}
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-2.5 md:gap-3">
-            {[
-              {
-                title: "Skateboarding",
-                text: "Clears my mind and keeps me moving.",
-                label: "MOVE",
-              },
-
-              {
-                title: "Music production",
-                text: "I make beats and experiment with different genres.",
-                label: "CREATE",
-              },
-
-              {
-                title: "Anime & movies",
-                text: "Stories, worlds and visual ideas that inspire me.",
-                label: "WATCH",
-              },
-
-              {
-                title: "Meeting people",
-                text: "I enjoy hearing different stories and perspectives.",
-                label: "CONNECT",
-              },
-
-              {
-                title: "Learning",
-                text: "I’m always trying to understand or build something new.",
-                label: "LEARN",
-              },
-
-              {
-                title: "Nature",
-                text: "Hiking, forests and the beach help me reset.",
-                label: "RESET",
-              },
-
-              {
-                title: "Basketball",
-                text: "Another way I like to stay active and have fun.",
-                label: "PLAY",
-              },
-
-              {
-                title: "Technology",
-                text: "I genuinely enjoy discovering how things work.",
-                label: "BUILD",
-              },
-            ].map((hobby, index) => (
+            {hobbies.map((hobby, index) => (
               <div
                 key={hobby.title}
                 className="
@@ -712,7 +760,7 @@ export default function AboutSection({ onSelectSection }) {
     {
       id: "projects",
 
-      title: "My Projects",
+      title: spanish ? "Mis Proyectos" : "My Projects",
 
       image: "/img/jeypeehProjects.png",
 
@@ -722,7 +770,6 @@ export default function AboutSection({ onSelectSection }) {
 
       content: ({ goToSection }) => (
         <div>
-          {/* INTRO */}
           <div className="mb-2.5 md:mb-4">
             <p
               className="
@@ -738,11 +785,13 @@ export default function AboutSection({ onSelectSection }) {
                 md:tracking-[0.22em]
               "
             >
-              Currently building
+              {spanish ? "Actualmente construyendo" : "Currently building"}
             </p>
 
             <h3 className="text-lg font-black tracking-tight md:text-3xl">
-              What&apos;s going on lately.
+              {spanish
+                ? "Lo que está pasando últimamente."
+                : "What's going on lately."}
             </h3>
 
             <p
@@ -758,49 +807,76 @@ export default function AboutSection({ onSelectSection }) {
                 md:leading-relaxed
               "
             >
-              A small look at what I&apos;m building, finishing and thinking
-              about next.
+              {spanish
+                ? "Una pequeña vista de lo que estoy construyendo, terminando y pensando para lo que viene."
+                : "A small look at what I'm building, finishing and thinking about next."}
             </p>
           </div>
 
-          {/* PROJECTS */}
           <div className="grid gap-2 md:gap-3">
             <ProgressProjectCard
               number="01"
-              eyebrow="Thinking"
-              title="Thinking about a new project"
-              description="Still figuring out what comes next."
+              eyebrow={spanish ? "Pensando" : "Thinking"}
+              title={
+                spanish
+                  ? "Pensando en un nuevo proyecto"
+                  : "Thinking about a new project"
+              }
+              description={
+                spanish
+                  ? "Todavía estoy descubriendo qué viene después."
+                  : "Still figuring out what comes next."
+              }
               progress={30}
               accent="yellow"
             />
 
             <ProgressProjectCard
               number="02"
-              eyebrow="Music"
-              title="Cooking something new"
-              description="A new track is currently taking shape."
+              eyebrow={spanish ? "Música" : "Music"}
+              title={
+                spanish
+                  ? "Cocinando algo nuevo"
+                  : "Cooking something new"
+              }
+              description={
+                spanish
+                  ? "Una nueva canción está tomando forma."
+                  : "A new track is currently taking shape."
+              }
               progress={60}
               accent="red"
             />
 
             <ProgressProjectCard
               number="03"
-              eyebrow="Completed"
+              eyebrow={spanish ? "Completado" : "Completed"}
               title="VOLTS"
-              subtitle="Full-Stack + IoT Ecosystem"
-              description="Hardware, mobile, cloud and enterprise software."
+              subtitle={
+                spanish
+                  ? "Ecosistema Full Stack + IoT"
+                  : "Full-Stack + IoT Ecosystem"
+              }
+              description={
+                spanish
+                  ? "Hardware, móvil, cloud y software empresarial."
+                  : "Hardware, mobile, cloud and enterprise software."
+              }
               progress={100}
               accent="green"
               logo="/img/volts/volts-logo.png"
-              buttonLabel="View in Work"
+              buttonLabel={
+                spanish ? "Ver en Proyectos" : "View in Work"
+              }
               onButtonClick={() => goToSection("work")}
             />
           </div>
 
           <div className="mt-2 border-t border-base-300 pt-2 md:mt-5 md:pt-4">
             <p className="text-center text-[8px] opacity-40 md:text-xs">
-              Projects move to Work once they&apos;re ready to be properly
-              documented.
+              {spanish
+                ? "Los proyectos pasan a la sección de Proyectos cuando están listos para documentarse correctamente."
+                : "Projects move to Work once they're ready to be properly documented."}
             </p>
           </div>
         </div>
@@ -814,7 +890,7 @@ export default function AboutSection({ onSelectSection }) {
     {
       id: "community",
 
-      title: "Communities",
+      title: spanish ? "Comunidades" : "Communities",
 
       image: "/img/jeypeehCommunities.png",
 
@@ -826,16 +902,19 @@ export default function AboutSection({ onSelectSection }) {
         <div>
           <div className="mb-5">
             <p className="mb-2 text-xs font-black uppercase tracking-[0.22em] text-green-500">
-              Community
+              {spanish ? "Comunidad" : "Community"}
             </p>
 
             <h3 className="text-2xl font-black tracking-tight md:text-3xl">
-              Building with other people.
+              {spanish
+                ? "Construyendo con otras personas."
+                : "Building with other people."}
             </h3>
 
             <p className="mt-2 text-sm leading-relaxed opacity-65">
-              Technology gets better when knowledge, ideas and experiences are
-              shared.
+              {spanish
+                ? "La tecnología mejora cuando compartimos conocimiento, ideas y experiencias."
+                : "Technology gets better when knowledge, ideas and experiences are shared."}
             </p>
           </div>
 
@@ -882,7 +961,9 @@ export default function AboutSection({ onSelectSection }) {
 
                 <div>
                   <p className="text-[9px] font-black uppercase tracking-[0.16em] text-green-500">
-                    Software engineering community
+                    {spanish
+                      ? "Comunidad de ingeniería de software"
+                      : "Software engineering community"}
                   </p>
 
                   <h4 className="mt-1 text-xl font-black tracking-tight md:text-2xl">
@@ -892,13 +973,16 @@ export default function AboutSection({ onSelectSection }) {
               </div>
 
               <p className="mt-4 text-sm leading-relaxed opacity-65">
-                We&apos;re a community for people interested in software
-                engineering. A place to learn, share knowledge and connect with
-                more code magicians.
+                {spanish
+                  ? "Somos una comunidad para personas interesadas en ingeniería de software. Un espacio para aprender, compartir conocimiento y conectar con más magos del código."
+                  : "We're a community for people interested in software engineering. A place to learn, share knowledge and connect with more code magicians."}
               </p>
 
               <div className="mt-5 grid grid-cols-3 gap-2">
-                {["Learn", "Share", "Connect"].map((label) => (
+                {(spanish
+                  ? ["Aprender", "Compartir", "Conectar"]
+                  : ["Learn", "Share", "Connect"]
+                ).map((label) => (
                   <div
                     key={label}
                     className="
@@ -935,7 +1019,10 @@ export default function AboutSection({ onSelectSection }) {
                     hover:text-white
                   "
                 >
-                  Visit Calzada Code
+                  {spanish
+                    ? "Visitar Calzada Code"
+                    : "Visit Calzada Code"}
+
                   <span>↗</span>
                 </a>
               </div>
@@ -947,7 +1034,7 @@ export default function AboutSection({ onSelectSection }) {
   ];
 
   return (
-    <Section title="About me">
+    <Section title={spanish ? "Sobre mí" : "About me"}>
       <div
         ref={aboutRef}
         className={`transition-all duration-1000 ease-out ${
@@ -962,6 +1049,7 @@ export default function AboutSection({ onSelectSection }) {
 
         <div className="mb-12 md:mb-16">
           {/* MOBILE */}
+
           <div className="text-left md:hidden">
             <div className="relative float-right mb-2 ml-4 w-[125px]">
               <div
@@ -988,18 +1076,16 @@ export default function AboutSection({ onSelectSection }) {
             </div>
 
             <p className="text-sm leading-7 opacity-85">
-              I&apos;m Juan Pablo García — a software developer and digital
-              creative who loves learning and building. I enjoy producing,
-              designing, and turning ideas into reality through technology and
-              creativity. Outside of work, I&apos;m into skateboarding, hiking,
-              and getting lost in a forest or at the beach. I aim to do things
-              right — with discipline and passion.
+              {spanish
+                ? "Soy Juan Pablo García — desarrollador de software y creativo digital al que le encanta aprender y construir. Disfruto producir, diseñar y convertir ideas en realidad mediante tecnología y creatividad. Fuera del trabajo me gusta el skateboarding, hacer senderismo y perderme en un bosque o en la playa. Busco hacer las cosas bien — con disciplina y pasión."
+                : "I'm Juan Pablo García — a software developer and digital creative who loves learning and building. I enjoy producing, designing, and turning ideas into reality through technology and creativity. Outside of work, I'm into skateboarding, hiking, and getting lost in a forest or at the beach. I aim to do things right — with discipline and passion."}
             </p>
 
             <div className="clear-both" />
           </div>
 
           {/* DESKTOP */}
+
           <div
             className="
               hidden items-center gap-12
@@ -1009,12 +1095,9 @@ export default function AboutSection({ onSelectSection }) {
           >
             <div className="text-left">
               <p className="max-w-2xl text-lg leading-9 opacity-85">
-                I&apos;m Juan Pablo García — a software developer and digital
-                creative who loves learning and building. I enjoy producing,
-                designing, and turning ideas into reality through technology
-                and creativity. Outside of work, I&apos;m into skateboarding,
-                hiking, and getting lost in a forest or at the beach. I aim to
-                do things right — with discipline and passion.
+                {spanish
+                  ? "Soy Juan Pablo García — desarrollador de software y creativo digital al que le encanta aprender y construir. Disfruto producir, diseñar y convertir ideas en realidad mediante tecnología y creatividad. Fuera del trabajo me gusta el skateboarding, hacer senderismo y perderme en un bosque o en la playa. Busco hacer las cosas bien — con disciplina y pasión."
+                  : "I'm Juan Pablo García — a software developer and digital creative who loves learning and building. I enjoy producing, designing, and turning ideas into reality through technology and creativity. Outside of work, I'm into skateboarding, hiking, and getting lost in a forest or at the beach. I aim to do things right — with discipline and passion."}
               </p>
             </div>
 
@@ -1056,18 +1139,12 @@ export default function AboutSection({ onSelectSection }) {
 
         <div className="mb-10 md:mb-12">
           <h3 className="mb-6 text-center text-xl font-semibold">
-            What I Do
+            {spanish ? "Lo que hago" : "What I Do"}
           </h3>
 
-          {/* =================================================
-              MOBILE
-
-              WEB | SOFTWARE | APPLICATION
-                 DESIGN | PRODUCER
-          ================================================= */}
+          {/* MOBILE */}
 
           <div className="mx-auto grid max-w-[330px] grid-cols-6 gap-x-2 gap-y-5 md:hidden">
-            {/* WEB */}
             <div className="col-span-2 flex flex-col items-center">
               <div
                 className="
@@ -1085,11 +1162,10 @@ export default function AboutSection({ onSelectSection }) {
               </div>
 
               <span className="mt-2 whitespace-nowrap text-center text-[11px] font-medium">
-                Web Design
+                {spanish ? "Diseño Web" : "Web Design"}
               </span>
             </div>
 
-            {/* SOFTWARE */}
             <div className="col-span-2 flex flex-col items-center">
               <div
                 className="
@@ -1111,7 +1187,6 @@ export default function AboutSection({ onSelectSection }) {
               </span>
             </div>
 
-            {/* APPLICATION */}
             <div className="col-span-2 flex flex-col items-center">
               <div
                 className="
@@ -1129,11 +1204,10 @@ export default function AboutSection({ onSelectSection }) {
               </div>
 
               <span className="mt-2 whitespace-nowrap text-center text-[11px] font-medium">
-                Application
+                {spanish ? "Aplicaciones" : "Application"}
               </span>
             </div>
 
-            {/* GRAPHIC DESIGN */}
             <div className="col-span-2 col-start-2 flex flex-col items-center">
               <div
                 className="
@@ -1151,11 +1225,10 @@ export default function AboutSection({ onSelectSection }) {
               </div>
 
               <span className="mt-2 whitespace-nowrap text-center text-[11px] font-medium">
-                Graphic Design
+                {spanish ? "Diseño Gráfico" : "Graphic Design"}
               </span>
             </div>
 
-            {/* PRODUCER */}
             <div className="col-span-2 col-start-4 flex flex-col items-center">
               <div
                 className="
@@ -1173,15 +1246,12 @@ export default function AboutSection({ onSelectSection }) {
               </div>
 
               <span className="mt-2 whitespace-nowrap text-center text-[11px] font-medium">
-                Producer
+                {spanish ? "Productor" : "Producer"}
               </span>
             </div>
           </div>
 
-          {/* =================================================
-              DESKTOP
-              Mantiene tu orden original
-          ================================================= */}
+          {/* DESKTOP */}
 
           <div className="hidden flex-wrap justify-center gap-7 md:flex md:gap-10">
             {skillsData.map((skill) => (
@@ -1222,15 +1292,16 @@ export default function AboutSection({ onSelectSection }) {
         <div className="mt-10 md:mt-12">
           <div className="mb-6 text-center md:mb-8">
             <p className="text-[9px] font-black uppercase tracking-[0.25em] text-[#0171DC] md:text-[10px]">
-              More about me
+              {spanish ? "Más sobre mí" : "More about me"}
             </p>
 
             <h3 className="mt-2 text-xl font-black tracking-tight md:text-2xl">
-              A little more than code.
+              {spanish
+                ? "Un poco más que código."
+                : "A little more than code."}
             </h3>
           </div>
 
-          {/* 3 CARDS ALWAYS HORIZONTAL */}
           <div
             className="
               mx-auto
@@ -1258,7 +1329,6 @@ export default function AboutSection({ onSelectSection }) {
                   "hover:shadow-xl",
                 ].join(" ")}
               >
-                {/* GLOW */}
                 <div
                   className={[
                     "absolute",
@@ -1275,19 +1345,15 @@ export default function AboutSection({ onSelectSection }) {
                 />
 
                 <div className="relative flex flex-col items-center text-center">
-                  {/* IMAGE */}
                   <div
                     className={[
                       "relative overflow-hidden rounded-full",
 
                       "h-[66px] w-[66px]",
-
                       "sm:h-20 sm:w-20",
-
                       "md:h-24 md:w-24",
 
                       "ring-[3px] ring-offset-2",
-
                       "md:ring-4 md:ring-offset-4",
 
                       "ring-offset-base-100",
@@ -1295,7 +1361,6 @@ export default function AboutSection({ onSelectSection }) {
                       "transition-transform duration-500",
 
                       "group-hover:scale-105",
-
                       "group-hover:rotate-[-2deg]",
 
                       item.ring,
@@ -1308,7 +1373,6 @@ export default function AboutSection({ onSelectSection }) {
                     />
                   </div>
 
-                  {/* TITLE */}
                   <h3
                     className="
                       mt-3
@@ -1328,7 +1392,6 @@ export default function AboutSection({ onSelectSection }) {
                     {item.title}
                   </h3>
 
-                  {/* EXPLORE */}
                   <span
                     className="
                       mt-1
@@ -1343,7 +1406,7 @@ export default function AboutSection({ onSelectSection }) {
                       md:tracking-[0.18em]
                     "
                   >
-                    Explore
+                    {spanish ? "Explorar" : "Explore"}
                   </span>
                 </div>
               </button>
@@ -1352,14 +1415,11 @@ export default function AboutSection({ onSelectSection }) {
         </div>
       </div>
 
-      {/* =====================================================
-          MODAL
-      ===================================================== */}
-
       <AboutModal
         item={selectedItem}
         onClose={() => setSelectedItem(null)}
         onSelectSection={onSelectSection}
+        language={language}
       />
     </Section>
   );

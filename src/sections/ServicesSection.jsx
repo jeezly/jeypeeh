@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const stroke = {
   stroke: "currentColor",
@@ -14,7 +15,10 @@ const BulbIcon = () => (
   <svg viewBox="0 0 24 24" className={iconClass}>
     <path {...stroke} d="M9 18h6" />
     <path {...stroke} d="M10 22h4" />
-    <path {...stroke} d="M8 14a6 6 0 118 0c-.9.8-1.4 1.8-1.6 3H9.6C9.4 15.8 8.9 14.8 8 14z" />
+    <path
+      {...stroke}
+      d="M8 14a6 6 0 118 0c-.9.8-1.4 1.8-1.6 3H9.6C9.4 15.8 8.9 14.8 8 14z"
+    />
   </svg>
 );
 
@@ -35,7 +39,10 @@ const PhoneIcon = () => (
 
 const DesignIcon = () => (
   <svg viewBox="0 0 24 24" className={iconClass}>
-    <path {...stroke} d="M12 3a9 9 0 100 18 3 3 0 003-3 2 2 0 012-2h1a3 3 0 000-6h-1a2 2 0 01-2-2 3 3 0 00-3-3z" />
+    <path
+      {...stroke}
+      d="M12 3a9 9 0 100 18 3 3 0 003-3 2 2 0 012-2h1a3 3 0 000-6h-1a2 2 0 01-2-2 3 3 0 00-3-3z"
+    />
     <circle cx="7.5" cy="10.5" r="1" fill="currentColor" />
     <circle cx="10" cy="15" r="1" fill="currentColor" />
     <circle cx="13" cy="8.5" r="1" fill="currentColor" />
@@ -62,15 +69,24 @@ const DeployIcon = () => (
 
 const BrainIcon = () => (
   <svg viewBox="0 0 24 24" className={iconClass}>
-    <path {...stroke} d="M9 4a3 3 0 00-3 3v1a3 3 0 000 6v1a3 3 0 003 3" />
-    <path {...stroke} d="M15 4a3 3 0 013 3v1a3 3 0 010 6v1a3 3 0 01-3 3" />
+    <path
+      {...stroke}
+      d="M9 4a3 3 0 00-3 3v1a3 3 0 000 6v1a3 3 0 003 3"
+    />
+    <path
+      {...stroke}
+      d="M15 4a3 3 0 013 3v1a3 3 0 010 6v1a3 3 0 01-3 3"
+    />
     <path {...stroke} d="M9 4v16M15 4v16M9 9h6M9 14h6" />
   </svg>
 );
 
 const StarIcon = () => (
   <svg viewBox="0 0 24 24" className={iconClass}>
-    <path {...stroke} d="M12 3l2.3 5.7L20 11l-5.7 2.3L12 19l-2.3-5.7L4 11l5.7-2.3L12 3z" />
+    <path
+      {...stroke}
+      d="M12 3l2.3 5.7L20 11l-5.7 2.3L12 19l-2.3-5.7L4 11l5.7-2.3L12 3z"
+    />
   </svg>
 );
 
@@ -120,9 +136,7 @@ function ServiceTags({ tags, border, color }) {
 
       {bottomTag && (
         <div className="flex justify-center">
-          <span className={tagClass}>
-            {bottomTag}
-          </span>
+          <span className={tagClass}>{bottomTag}</span>
         </div>
       )}
     </div>
@@ -130,6 +144,9 @@ function ServiceTags({ tags, border, color }) {
 }
 
 export default function ServicesSection() {
+  const { language } = useLanguage();
+  const spanish = language === "es";
+
   const sectionRef = useRef(null);
   const [visible, setVisible] = useState(true);
 
@@ -145,24 +162,35 @@ export default function ServicesSection() {
     );
 
     if (sectionRef.current) obs.observe(sectionRef.current);
+
     return () => obs.disconnect();
   }, []);
 
   const services = [
     {
-      title: "Idea Factory",
-      subtitle: "From raw idea to clear MVP.",
-      desc: "I turn concepts into simple flows, roadmaps, and testable first versions.",
+      title: spanish ? "Fábrica de Ideas" : "Idea Factory",
+      subtitle: spanish
+        ? "De una idea inicial a un MVP claro."
+        : "From raw idea to clear MVP.",
+      desc: spanish
+        ? "Convierto conceptos en flujos simples, roadmaps y primeras versiones que se puedan probar."
+        : "I turn concepts into simple flows, roadmaps, and testable first versions.",
       Icon: BulbIcon,
       color: "text-yellow-500",
       bg: "bg-yellow-500/10",
       border: "border-yellow-400/70",
-      tags: ["Research", "Roadmap", "Prototype"],
+      tags: spanish
+        ? ["Investigación", "Roadmap", "Prototipo"]
+        : ["Research", "Roadmap", "Prototype"],
     },
     {
-      title: "Full-Stack Software",
-      subtitle: "Web apps with real logic.",
-      desc: "Modern interfaces, APIs, authentication, database flows, and deployment-ready features.",
+      title: spanish ? "Software Full Stack" : "Full-Stack Software",
+      subtitle: spanish
+        ? "Aplicaciones web con lógica real."
+        : "Web apps with real logic.",
+      desc: spanish
+        ? "Interfaces modernas, APIs, autenticación, flujos de base de datos y funciones listas para desplegar."
+        : "Modern interfaces, APIs, authentication, database flows, and deployment-ready features.",
       Icon: CodeIcon,
       color: "text-blue-500",
       bg: "bg-blue-500/10",
@@ -170,9 +198,13 @@ export default function ServicesSection() {
       tags: ["React", "Node", "APIs"],
     },
     {
-      title: "Android Apps",
-      subtitle: "Mobile prototypes and app flows.",
-      desc: "Android-first interfaces, API consumption, local data, and app concepts.",
+      title: spanish ? "Apps Android" : "Android Apps",
+      subtitle: spanish
+        ? "Prototipos móviles y flujos de aplicación."
+        : "Mobile prototypes and app flows.",
+      desc: spanish
+        ? "Interfaces enfocadas en Android, consumo de APIs, datos locales y conceptos de aplicaciones móviles."
+        : "Android-first interfaces, API consumption, local data, and app concepts.",
       Icon: PhoneIcon,
       color: "text-green-500",
       bg: "bg-green-500/10",
@@ -181,8 +213,12 @@ export default function ServicesSection() {
     },
     {
       title: "UI/UX & Design",
-      subtitle: "Clean, usable, responsive screens.",
-      desc: "Minimal layouts, typography, design systems, and interfaces without visual clutter.",
+      subtitle: spanish
+        ? "Pantallas limpias, útiles y responsivas."
+        : "Clean, usable, responsive screens.",
+      desc: spanish
+        ? "Layouts minimalistas, tipografía, sistemas de diseño e interfaces sin saturación visual."
+        : "Minimal layouts, typography, design systems, and interfaces without visual clutter.",
       Icon: DesignIcon,
       color: "text-purple-500",
       bg: "bg-purple-500/10",
@@ -190,9 +226,13 @@ export default function ServicesSection() {
       tags: ["Figma", "Tailwind", "UX"],
     },
     {
-      title: "Integrations",
-      subtitle: "Connecting platforms and services.",
-      desc: "Payment flows, auth, webhooks, APIs, file uploads, messages, and automation logic.",
+      title: spanish ? "Integraciones" : "Integrations",
+      subtitle: spanish
+        ? "Conectando plataformas y servicios."
+        : "Connecting platforms and services.",
+      desc: spanish
+        ? "Flujos de pagos, autenticación, webhooks, APIs, archivos, mensajes y automatizaciones."
+        : "Payment flows, auth, webhooks, APIs, file uploads, messages, and automation logic.",
       Icon: PlugIcon,
       color: "text-cyan-500",
       bg: "bg-cyan-500/10",
@@ -200,9 +240,13 @@ export default function ServicesSection() {
       tags: ["Stripe", "Twilio", "Cloud"],
     },
     {
-      title: "Deploy & DevOps",
-      subtitle: "Getting projects online cleanly.",
-      desc: "Environment variables, hosting, repositories, database setup, and lightweight delivery.",
+      title: spanish ? "Deploy & DevOps" : "Deploy & DevOps",
+      subtitle: spanish
+        ? "Publicando proyectos de forma limpia."
+        : "Getting projects online cleanly.",
+      desc: spanish
+        ? "Variables de entorno, hosting, repositorios, configuración de bases de datos y despliegues ligeros."
+        : "Environment variables, hosting, repositories, database setup, and lightweight delivery.",
       Icon: DeployIcon,
       color: "text-orange-500",
       bg: "bg-orange-500/10",
@@ -210,61 +254,89 @@ export default function ServicesSection() {
       tags: ["Vercel", "Railway", "Git"],
     },
     {
-      title: "Creative Strategy",
-      subtitle: "Direction before execution.",
-      desc: "I help shape the voice, structure, and visual direction of a project before building.",
+      title: spanish ? "Estrategia Creativa" : "Creative Strategy",
+      subtitle: spanish
+        ? "Dirección antes de ejecutar."
+        : "Direction before execution.",
+      desc: spanish
+        ? "Ayudo a definir la voz, estructura y dirección visual de un proyecto antes de construirlo."
+        : "I help shape the voice, structure, and visual direction of a project before building.",
       Icon: BrainIcon,
       color: "text-pink-500",
       bg: "bg-pink-500/10",
       border: "border-pink-400/70",
-      tags: ["Position", "Story", "Ideas"],
+      tags: spanish
+        ? ["Posición", "Historia", "Ideas"]
+        : ["Position", "Story", "Ideas"],
     },
     {
-      title: "Brand Development",
-      subtitle: "Identity that feels intentional.",
-      desc: "Basic identity systems, visual consistency, naming ideas, and brand presentation.",
+      title: spanish ? "Desarrollo de Marca" : "Brand Development",
+      subtitle: spanish
+        ? "Identidad visual con intención."
+        : "Identity that feels intentional.",
+      desc: spanish
+        ? "Sistemas básicos de identidad, consistencia visual, ideas de naming y presentación de marca."
+        : "Basic identity systems, visual consistency, naming ideas, and brand presentation.",
       Icon: StarIcon,
       color: "text-amber-500",
       bg: "bg-amber-500/10",
       border: "border-amber-400/70",
-      tags: ["Logo", "Guides", "Visuals"],
+      tags: spanish
+        ? ["Logo", "Guías", "Visuales"]
+        : ["Logo", "Guides", "Visuals"],
     },
     {
-      title: "Collaboration",
-      subtitle: "Building with people.",
-      desc: "Team coordination, feedback loops, planning, and communication during the project.",
+      title: spanish ? "Colaboración" : "Collaboration",
+      subtitle: spanish
+        ? "Construyendo con otras personas."
+        : "Building with people.",
+      desc: spanish
+        ? "Coordinación de equipo, ciclos de retroalimentación, planeación y comunicación durante el proyecto."
+        : "Team coordination, feedback loops, planning, and communication during the project.",
       Icon: GroupIcon,
       color: "text-lime-500",
       bg: "bg-lime-500/10",
       border: "border-lime-400/70",
-      tags: ["Team", "Feedback", "Plan"],
+      tags: spanish
+        ? ["Equipo", "Feedback", "Plan"]
+        : ["Team", "Feedback", "Plan"],
     },
     {
       title: "FUN",
-      subtitle: "Projects need personality.",
-      desc: "I like making things feel alive, memorable, and enjoyable without losing usability.",
+      subtitle: spanish
+        ? "Los proyectos también necesitan personalidad."
+        : "Projects need personality.",
+      desc: spanish
+        ? "Me gusta hacer que las cosas se sientan vivas, memorables y disfrutables sin perder usabilidad."
+        : "I like making things feel alive, memorable, and enjoyable without losing usability.",
       Icon: SmileIcon,
       color: "text-red-500",
       bg: "bg-red-500/10",
       border: "border-red-400/70",
-      tags: ["Energy", "Creative", "Human"],
+      tags: spanish
+        ? ["Energía", "Creativo", "Humano"]
+        : ["Energy", "Creative", "Human"],
       centerDesktop: true,
     },
   ];
 
   return (
-    <section>
+    <section ref={sectionRef}>
       <div className="text-center mb-10">
         <p className="text-xs uppercase tracking-[0.35em] text-[#0171DC] font-bold mb-3">
-          Services
+          {spanish ? "Servicios" : "Services"}
         </p>
 
         <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
-          What I can build with you
+          {spanish
+            ? "Lo que puedo construir contigo"
+            : "What I can build with you"}
         </h2>
 
         <p className="max-w-2xl mx-auto text-sm md:text-base opacity-70">
-          Focused services for turning ideas into polished, usable digital products.
+          {spanish
+            ? "Servicios enfocados en convertir ideas en productos digitales funcionales, pulidos y utilizables."
+            : "Focused services for turning ideas into polished, usable digital products."}
         </p>
       </div>
 
@@ -272,13 +344,17 @@ export default function ServicesSection() {
         {services.map((service, index) => (
           <article
             key={service.title}
-            style={{ transitionDelay: visible ? `${index * 45}ms` : "0ms" }}
+            style={{
+              transitionDelay: visible ? `${index * 45}ms` : "0ms",
+            }}
             className={[
               "group rounded-[1.6rem] md:rounded-[2rem] border border-base-300 bg-base-100/75 backdrop-blur-xl",
               "p-4 md:p-6 shadow-sm transition-all duration-500",
               "hover:-translate-y-1 hover:border-[#0171DC]/40 hover:bg-base-100",
               service.centerDesktop ? "lg:col-start-2" : "",
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+              visible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4",
             ].join(" ")}
           >
             <div

@@ -1,3 +1,5 @@
+import { useLanguage } from "../context/LanguageContext.jsx";
+
 const IconInstagram = (p) => (
   <svg viewBox="0 0 24 24" className="h-6 w-6" {...p}>
     <path
@@ -62,6 +64,10 @@ const IconSoundcloud = (p) => (
 );
 
 export default function ContactSection() {
+  const { language } = useLanguage();
+
+  const spanish = language === "es";
+
   const socials = [
     {
       name: "Instagram",
@@ -73,37 +79,43 @@ export default function ContactSection() {
     {
       name: "Facebook",
       href: "https://www.facebook.com/share/1CLof3PLUp/?mibextid=wwXIfr",
-      className: "border-[#1877F2] text-[#1877F2] hover:bg-[#1877F2]/10",
+      className:
+        "border-[#1877F2] text-[#1877F2] hover:bg-[#1877F2]/10",
       Icon: IconFacebook,
     },
     {
       name: "X",
       href: "https://x.com/jeypeeh_?s=21",
-      className: "border-base-content/70 text-base-content hover:bg-base-content/10",
+      className:
+        "border-base-content/70 text-base-content hover:bg-base-content/10",
       Icon: IconX,
     },
     {
       name: "GitHub",
       href: "https://github.com/jeezly",
-      className: "border-green-500 text-green-500 hover:bg-green-500/10",
+      className:
+        "border-green-500 text-green-500 hover:bg-green-500/10",
       Icon: IconGithub,
     },
     {
       name: "LinkedIn",
       href: "https://www.linkedin.com/in/jeezly",
-      className: "border-[#0A66C2] text-[#0A66C2] hover:bg-[#0A66C2]/10",
+      className:
+        "border-[#0A66C2] text-[#0A66C2] hover:bg-[#0A66C2]/10",
       Icon: IconLinkedIn,
     },
     {
-      name: "Email",
+      name: spanish ? "Correo" : "Email",
       href: "mailto:heezly123@gmail.com",
-      className: "border-red-500 text-red-500 hover:bg-red-500/10",
+      className:
+        "border-red-500 text-red-500 hover:bg-red-500/10",
       Icon: IconMail,
     },
     {
       name: "SoundCloud",
       href: "https://on.soundcloud.com/ZoHY0hFGPUfUe89jwK",
-      className: "border-orange-500 text-orange-500 hover:bg-orange-500/10",
+      className:
+        "border-orange-500 text-orange-500 hover:bg-orange-500/10",
       Icon: IconSoundcloud,
       centered: true,
     },
@@ -116,7 +128,11 @@ export default function ContactSection() {
     <a
       href={s.href}
       target={s.href.startsWith("http") ? "_blank" : undefined}
-      rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
+      rel={
+        s.href.startsWith("http")
+          ? "noopener noreferrer"
+          : undefined
+      }
       className={[
         "rounded-3xl border-2 bg-transparent",
         "min-h-[110px] md:min-h-[120px]",
@@ -127,17 +143,22 @@ export default function ContactSection() {
       ].join(" ")}
     >
       <s.Icon />
+
       <span className="text-sm font-semibold">{s.name}</span>
     </a>
   );
 
   return (
     <section className="scroll-mt-24">
-      <h2 className="mb-5 text-3xl font-bold text-center">Contact</h2>
+      <h2 className="mb-5 text-3xl font-bold text-center">
+        {spanish ? "Contacto" : "Contact"}
+      </h2>
 
       <div className="min-h-[58vh] md:min-h-[62vh] flex flex-col">
         <p className="text-center opacity-80 mb-6">
-          Let’s connect — pick any platform.
+          {spanish
+            ? "Conectemos — elige la plataforma que prefieras."
+            : "Let’s connect — pick any platform."}
         </p>
 
         <div className="flex-1 flex items-start">
@@ -160,7 +181,19 @@ export default function ContactSection() {
         </div>
 
         <div className="mt-6 text-center text-xs opacity-70">
-          Fastest reply: <span className="font-semibold">Email</span> • Open to collabs.
+          {spanish ? (
+            <>
+              Respuesta más rápida:{" "}
+              <span className="font-semibold">Correo</span> • Abierto a
+              colaboraciones.
+            </>
+          ) : (
+            <>
+              Fastest reply:{" "}
+              <span className="font-semibold">Email</span> • Open to
+              collabs.
+            </>
+          )}
         </div>
       </div>
     </section>
