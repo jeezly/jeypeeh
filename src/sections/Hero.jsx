@@ -45,12 +45,12 @@ export default function Hero() {
   */
 
   const cvFile = spanish
-    ? "/CV_GarciaHernandezJuanPablo_ES.pdf"
+    ? "/CV_GarciaHernandezJuanPablo.pdf"
     : "/Resume_GarciaHernandezJuanPablo.pdf";
 
   const cvDownloadName = spanish
     ? "CV_GarciaHernandezJuanPablo.pdf"
-    : "Resume_GarciaHernandezJuanPablo_EN.pdf";
+    : "Resume_GarciaHernandezJuanPablo.pdf";
 
   return (
     <section className="relative w-full min-h-[75vh] md:min-h-screen overflow-hidden">
