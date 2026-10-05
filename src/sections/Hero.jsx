@@ -46,10 +46,10 @@ export default function Hero() {
 
   const cvFile = spanish
     ? "/CV_GarciaHernandezJuanPablo_ES.pdf"
-    : "/Resume_GarciaHernandezJuanPablo_EN.pdf";
+    : "/Resume_GarciaHernandezJuanPablo.pdf";
 
   const cvDownloadName = spanish
-    ? "CV_GarciaHernandezJuanPablo_ES.pdf"
+    ? "CV_GarciaHernandezJuanPablo.pdf"
     : "Resume_GarciaHernandezJuanPablo_EN.pdf";
 
   return (
